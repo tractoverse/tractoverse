@@ -1,0 +1,102 @@
+# =============================================================================
+# tractoverse - single source of truth for the tractoverse brand
+# =============================================================================
+#
+# This `_brand.yml` is the canonical definition of the tractoverse visual
+# identity. It is consumed by:
+#   * the tractoverse home page (pkgdown / Quarto) via `brand:`
+#   * any tractoverse package website or Shiny app via `_brand.yml`-aware
+#     tooling (Quarto `brand:`, bslib `bs_theme(brand = ...)`)
+#
+# The palette is drawn from the tractoverse useR! 2026 talk
+# (https://astamm.github.io/talks/2026-07-09-tractoverse/): a GitHub-dark
+# shell (#0d1117) with the talk's vibrant square colors used as each
+# package's signature hue. Provenance: talk index.qmd + custom.css.
+# =============================================================================
+
+meta:
+  name:
+    short: tractoverse
+    full: The tractoverse
+  link:
+    home: https://tractoverse.github.io/
+    github: https://github.com/tractoverse
+
+logo:
+  images:
+    tractoverse: logos/tractoverse.png
+    fiber:       logos/fiber.png
+    master:      logos/master.png
+    rtists:      logos/rtists.png
+    riot:        logos/riot.png
+    mascot:      logos/mascot.png
+    bot:         logos/bot.png
+  medium: tractoverse
+
+color:
+  palette:
+    # --- GitHub-dark shell (from the tractoverse talk custom.css) ---------
+    black:        "#0d1117"   # page / hexagon background
+    surface:      "#161b22"   # raised panels, callouts
+    surface-2:    "#21262d"   # chips, badges, wells
+    border:       "#30363d"   # hairline borders
+    silver:       "#e6edf3"   # primary foreground on dark
+    grey:         "#8b949e"   # muted text / captions
+
+    # --- talk accent & status hues ----------------------------------------
+    blue:         "#58a6ff"   # accent links, headings
+    green:        "#3fb950"   # success / go / CRAN
+    purple:       "#a371f7"   # pending
+    yellow:       "#d29922"   # github / in-development
+    red:          "#f85149"   # danger / limitations
+
+    # --- vibrant square hues (per-package signature colors) ---------------
+    fiber-blue:   "#59aaea"   # fiber   : data-structure backbone
+    master-orange:"#ff9441"   # master  : bundle / microstructure simulator
+    rtists-purple:"#a980fc"   # rtists  : interactive 3D visualization
+    riot-teal:    "#3ec4b2"   # riot    : I/O data flows
+    mascot-yellow:"#ffcf1b"   # mascot  : curated reference datasets
+    bot-green:    "#3fb950"   # bot     : bundle optimal transport
+
+  # --- semantic roles -------------------------------------------------------
+  foreground: silver
+  background: black
+  primary:    blue
+  secondary:  grey
+  light:      "#f0f6fc"
+  dark:       black
+  success:    green
+  info:       "#58a6ff"
+  warning:    yellow
+  danger:     red
+
+  # Per-package aliases so any tool can color-code a package by name.
+  fiber:  fiber-blue
+  master: master-orange
+  rtists: rtists-purple
+  riot:   riot-teal
+  mascot: mascot-yellow
+  bot:    bot-green
+
+typography:
+  fonts:
+    - family: Inter
+      source: google
+      weight: [400, 600, 700]
+    - family: JetBrains Mono
+      source: google
+      weight: [400, 500]
+  base:
+    family: Inter
+    size: 16px
+    line-height: 1.5
+  headings:
+    family: Inter
+    weight: 700
+  monospace: JetBrains Mono
+
+defaults:
+  bootstrap:
+    rules: |
+      .navbar { background-color: $black; }
+      body { background-color: $black; color: $silver; }

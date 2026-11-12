@@ -1,0 +1,50 @@
+Third-party content and provenance
+=================================
+
+The tractoverse brand artifacts (logos, theme, colors) embed / derive from the
+following third-party works. This NOTICE records provenance and license for
+every vendored or bundled component, in line with the package licensing rule
+(verify that each redistributed library permits the exact use).
+
+1. Font Awesome (icon glyphs embedded in the package logos)
+   ---------------------------------------------------------
+   The per-package emblems (fiber: bezier-curve, master: blender, rtists:
+   palette, riot: feather-pointed, mascot: book-atlas, bot:
+   magnifying-glass-chart) are Font Awesome Free icons.
+   - Source: Font Awesome Free (https://fontawesome.com),
+     FortAwesome/Font-Awesome (github.com/FortAwesome/Font-Awesome), Free 6.5.2.
+   - Delivered in R through the 'fontawesome' R package v0.5.3
+     (github.com/rstudio/fontawesome; CRAN).
+   - License (per the bundled all.css header):
+       Icons:  CC BY 4.0 (Creative Commons Attribution 4.0 International)
+       Fonts:  SIL OFL 1.1
+       Code:   MIT License
+     License reference: https://fontawesome.com/license/free
+     SPDX: CC-BY-4.0 (icons).
+   - Use: The SVG glyphs are rasterized (via rsvg) into the package logos
+     distributed as PNG in `inst/brand/logos/`. This is permitted under
+     CC BY 4.0 and Font Awesome's free-license terms WITH ATTRIBUTION.
+   - Attribution: "Font Awesome Free 6.5.2 by @fontawesome - https://fontawesome.com
+     (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License)". Copyright
+     2024 Fonticons, Inc.
+
+2. three.js (used by the tractoverse render pipeline, NOT bundled here)
+   --------------------------------------------------------------------
+   The logo glyphs are rendered with the rtists R package, which vendors
+   three.js r186 (MIT). tractoverse itself does NOT redistribute the three.js
+   bundle; it only ships the resulting PNG renders. See rtists/inst/NOTICE for
+   the three.js MIT provenance and NOTICE (Copyright (c) 2010-2026 Three.js
+   Authors, SPDX-License-Identifier: MIT).
+
+3. htmlwidgets.js / htmltools CSS in the served preview (NOT bundled here)
+   -----------------------------------------------------------------------
+   Local preview outputs under the build scratch directory (`serve/`) embed
+   htmlwidgets (MIT) and htmltools fill.css. These are development-only render
+   previews and are not shipped with tractoverse.
+
+Provenance of the tractoverse brand palette
+-------------------------------------------
+The brand palette (GitHub-dark shell #0d1117 + per-package vibrant hues) is
+drawn from the tractoverse useR! 2026 talk by Aymeric Stamm
+(https://astamm.github.io/talks/2026-07-09-tractoverse/), specifically its
+index.qmd + custom.css.

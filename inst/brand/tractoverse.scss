@@ -1,0 +1,124 @@
+/* =============================================================================
+ * tractoverse — shared brand stylesheet
+ * =============================================================================
+ * The reusable dark theme for tractoverse Quarto / pkgdown sites. Adapted
+ * from the tractoverse useR! 2026 talk custom.css
+ * (https://astamm.github.io/talks/2026-07-09-tractoverse/).
+ *
+ * Exposes Bootstrap-framework-agnostic variables so it can be dropped into any
+ * site. Refer "brand" tokens via the `_brand.yml` in the same directory; the
+ * SCSS below encodes the same values for plain sites that don't run through
+ * brand.yml-aware tooling.
+ * ============================================================================= */
+
+/* --- tokens (mirrors _brand.yml) ------------------------------------------ */
+$tv-bg:      #0d1117;   /* shell background            */
+$tv-surface: #161b22;   /* raised panels / callouts    */
+$tv-surface2:#21262d;   /* chips / badges / wells      */
+$tv-border:  #30363d;   /* hairline borders            */
+$tv-fg:      #e6edf3;   /* primary text on dark        */
+$tv-muted:   #8b949e;   /* secondary text              */
+
+$tv-blue:    #58a6ff;   /* accent                      */
+$tv-green:   #3fb950;   /* success / go / CRAN         */
+$tv-purple:  #a371f7;   /* pending                     */
+$tv-yellow:  #d29922;   /* in-development              */
+$tv-red:     #f85149;   /* danger / limitations        */
+
+/* per-package signature hues */
+$pkg-fiber:  #59aaea;
+$pkg-master: #ff9441;
+$pkg-rtists: #a980fc;
+$pkg-riot:   #3ec4b2;
+$pkg-mascot: #ffcf1b;
+$pkg-bot:    #3fb950;
+
+/* --- shell ----------------------------------------------------------------- */
+body, .reveal {
+  background-color: $tv-bg;
+  color: $tv-fg;
+}
+.navbar, .navbar-default {
+  background-color: $tv-bg;
+  border-bottom: 1px solid $tv-border;
+}
+
+/* --- headings & text ------------------------------------------------------- */
+h1, h2, h3, h4 { color: $tv-blue; font-weight: 700; }
+.subtitle, .dim { color: $tv-muted; }
+.reveal h2 { color: $tv-blue; }
+code, pre, .monospace { font-family: 'JetBrains Mono', monospace; }
+
+/* --- callout / panel boxes ------------------------------------------------- */
+/* Usage: <div class="tv-box"> ... </div> or a callout with class ok / warn */
+.tv-box, .callout-box {
+  background: $tv-surface;
+  border-left: 4px solid $tv-blue;
+  border-radius: 0 8px 8px 0;
+  padding: 0.8rem 1.2rem;
+  margin: 0.4rem 0;
+  color: $tv-fg;
+}
+.tv-box.ok,  .callout-box.ok   { border-color: $tv-green; }
+.tv-box.warn,.callout-box.warn { border-color: $tv-yellow; }
+.tv-box.danger,.callout-box.danger { border-color: $tv-red; }
+
+/* --- package pill badges --------------------------------------------------- */
+/* <span class="pkg pkg-fiber">fiber</span> */
+.pkg {
+  display: inline-block;
+  background: $tv-surface2;
+  border: 1px solid $tv-border;
+  border-radius: 6px;
+  padding: 0.3rem 0.9rem;
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 0.9em;
+  color: $tv-blue;
+  margin: 0.2rem;
+}
+.pkg-fiber   { border-color: $pkg-fiber;   color: $pkg-fiber; }
+.pkg-master  { border-color: $pkg-master;  color: $pkg-master; }
+.pkg-rtists  { border-color: $pkg-rtists;  color: $pkg-rtists; }
+.pkg-riot    { border-color: $pkg-riot;    color: $pkg-riot; }
+.pkg-mascot  { border-color: $pkg-mascot;  color: $pkg-mascot; }
+.pkg-bot     { border-color: $pkg-bot;     color: $pkg-bot; }
+.pkg.cran    { border-color: $tv-green; color: $tv-green; }
+.pkg.pend    { border-color: $tv-purple; color: $tv-purple; }
+.pkg.gh      { border-color: $tv-yellow; color: $tv-yellow; }
+
+/* --- timeline -------------------------------------------------------------- */
+/* <div class="tv-timeline"><div class="tl-item"><span class="tl-date">..</span>
+ *    <span class="tl-label">..</span><span class="tl-desc">..</span></div>...</div> */
+.tv-timeline {
+  display: flex;
+  flex-direction: column;
+  position: relative;
+  padding-left: 2rem;
+}
+.tv-timeline::before {
+  content: '';
+  position: absolute;
+  left: 0.55rem; top: 0.5rem; bottom: 0.5rem;
+  width: 3px;
+  background: linear-gradient(180deg, $tv-green, $tv-blue, $tv-purple);
+  border-radius: 2px;
+}
+.tl-item {
+  display: flex; align-items: baseline; gap: 1.2rem;
+  position: relative; padding: 0.55rem 0;
+}
+.tl-item::before {
+  content: '';
+  position: absolute; left: -1.5rem; top: 50%;
+  width: 12px; height: 12px; border-radius: 50%;
+  background: $tv-blue; border: 2px solid $tv-bg;
+}
+.tl-item.cran::before { background: $tv-green; }
+.tl-item.pend::before { background: $tv-purple; }
+.tl-item.gh::before   { background: $tv-yellow; }
+.tl-date  { color: $tv-muted; font-size: 0.85em; min-width: 5rem; text-align: right; }
+.tl-label { font-family: 'JetBrains Mono', monospace; font-size: 0.95em; color: $tv-fg; }
+.tl-desc  { color: $tv-muted; font-size: 0.85em; }
+
+/* --- stat numbers / hero --------------------------------------------------- */
+.tv-stat { font-size: 2.5em; font-weight: 800; color: $tv-blue; }

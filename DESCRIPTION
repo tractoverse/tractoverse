@@ -1,0 +1,47 @@
+Package: tractoverse
+Title: The Tractoverse: A Collection of R Packages for Diffusion MRI Tractography
+Version: 0.1.0
+Authors@R: c(
+    person(
+        given = "Aymeric",
+        family = "Stamm",
+        role = c("aut", "cre", "cph"),
+        email = "aymeric.stamm@cnrs.fr",
+        comment = c(ORCID = "0000-0002-8725-3654")
+    ))
+Description: A curated collection of R packages for the analysis of diffusion
+    MRI tractography data, inspired by the 'tidyverse'. This meta-package
+    installs and attaches the tractoverse family: 'fiber' (S7 data structures),
+    'master' (simulation of bundles and microstructural attributes), 'rtists'
+    (interactive 3D visualization), 'riot' (input/output), 'mascot' (reference
+    datasets) and 'bot' (bundle optimal transport). It also ships the shared
+    tractoverse brand (colors, theme, logos) as the single source of truth
+    reused by the individual package websites and applications.
+License: MIT + file LICENSE
+Encoding: UTF-8
+LazyData: true
+URL: https://tractoverse.github.io/,
+    https://github.com/tractoverse/tractoverse
+BugReports: https://github.com/tractoverse/tractoverse/issues
+Depends:
+    R (>= 4.1.0)
+Imports:
+    fiber,
+    master,
+    rtists,
+    riot,
+    mascot,
+    bot
+Suggests:
+    knitr,
+    rmarkdown,
+    pkgdown
+Remotes:
+    tractoverse/fiber,
+    tractoverse/master,
+    tractoverse/rtists,
+    tractoverse/riot,
+    tractoverse/mascot,
+    tractoverse/bot
+Config/Needs/website: pkgdown, rmarkdown
+Config/roxygen2/version: 8.1.1
