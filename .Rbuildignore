@@ -7,3 +7,7 @@
 ^pkgdown$
 ^\.github$
 ^codecov\.yml$
+^[.]?air[.]toml$
+^\.vscode$
+^README\.qmd$
+^cran-comments\.md$

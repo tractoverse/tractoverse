@@ -8,12 +8,12 @@
 #' @export
 tractoverse_packages <- function() {
   c(
-    fiber  = "Data structures for tractography data",
+    fiber = "Data structures for tractography data",
     master = "Simulation of streamlines / bundles / bundle sets with microstructural parameters",
     rtists = "Visualization",
-    riot   = "Data I/O (through rvtk)",
-    toad   = "Tractography Open Atlases Data (companion dataset package)",
-    bot    = "Bundle optimal transport; statistical methods for tractography data"
+    riot = "Data I/O (through rvtk)",
+    toad = "Tractography Open Atlases Data (companion dataset package)",
+    bot = "Bundle optimal transport; statistical methods for tractography data"
   )
 }
 
@@ -29,19 +29,19 @@ tractoverse_packages <- function() {
 tractoverse_brand <- function() {
   list(
     shell = c(
-      black   = "#0d1117",
+      black = "#0d1117",
       surface = "#161b22",
-      border  = "#30363d",
-      silver  = "#e6edf3",
-      grey    = "#8b949e"
+      border = "#30363d",
+      silver = "#e6edf3",
+      grey = "#8b949e"
     ),
     palette = c(
-      fiber  = "#59aaea",
+      fiber = "#59aaea",
       master = "#ff9441",
       rtists = "#a980fc",
-      riot   = "#3ec4b2",
-      toad   = "#ffcf1b",
-      bot    = "#3fb950"
+      riot = "#3ec4b2",
+      toad = "#ffcf1b",
+      bot = "#3fb950"
     ),
     packages = tractoverse_packages()
   )

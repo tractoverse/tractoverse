@@ -17,7 +17,7 @@ Meta-package build-out (in progress). Status: `[ ]` = open, `[x]` = done,
       (git-versioned, Rbuildignore'd). **(this file)**
 - [x] Replace the Python `screenshot.py` with an R script using webshot2
       (now `screenshot.R`, driven by chromote, the webshot2 browser lib).
-- [ ] Rename `{mascot}` to `{toad}` (Tractography Open Atlases Data).
+- [~] Rename `{mascot}` to `{toad}` (Tractography Open Atlases Data).
       Meta-package + logo done; mascot repo local package rename + disk
       folder mascot/ -> toad/ done (committed 841efdb); **GitHub repo
       rename tractoverse/mascot -> tractoverse/toad still pending** (after it,
@@ -105,7 +105,7 @@ color #59aaea").
 Task-specific logo build decisions — kept here, out of AGENTS.md, because they
 are specific to the logo-generation task and its regeneration runs.
 
-The 6 package logos are rebuilt on a common shell:
+The 6 package logos share a common shell:
 
 - **Elements (only 3):** the **package name** (much larger), a **glyph** (a
   transparent **symmetric pyramidal tract** that fans left/right and fills the
@@ -113,22 +113,21 @@ The 6 package logos are rebuilt on a common shell:
 - **Background:** white / light. **Border:** black hexagon `#111111`,
   **pointy-top**, `R = 300`, canvas `W = 520` (round(sqrt(3)*R)),
   `H = 600` (round(2*R)).
-- **Cone glyph (APPROVED v24):** the **exact-symmetric butterfly** built from a
-  single hemisphere via `mirror_x_side="L"` in `build-scene.R`:
-  `bL = cl[iL]` (30 crown-sampled CST_L streamlines) as the left wing, right
-  wing = `mirror_x(bL)` reflected across X = 0. This replaces the old merge of
-  the two unequal anatomy halves (which was right-hemisphere-heavier). Rendered
-  at `splay 0` (raw, uncanted anatomy), tinted with the package color.
+- **Cone glyph:** the **exact-symmetric butterfly** built from a single
+  hemisphere via `mirror_x_side="L"` in `build-scene.R`: `bL = cl[iL]` (30
+  crown-sampled CST_L streamlines) as the left wing, right wing =
+  `mirror_x(bL)` reflected across X = 0. This gives a perfectly symmetric cone
+  (the two anatomy halves differ and would otherwise render right-hemisphere-
+  heavier). Rendered at `splay 0` (raw, uncanted anatomy), tinted with the
+  package color.
 - **Per-package color everywhere:** tract, name, and icon all use the package
   palette color.
 
-### Emblem = FontAwesome icons (hand-drawn polygon emblem REJECTED)
+### Emblem = FontAwesome icons
 
-Do NOT hand-draw/draw the emblem with polygons (the earlier class-emblem
-polygon was rejected as "super ugly; bundles are super fuzzy"). Use FontAwesome
-icons instead, per package (`fontawesome` v0.5.3; `rsvg` renders SVG → 600×600
-RGBA PNG with the shape in the alpha channel, which is chroma-keyed into an
-alpha mask and tinted with the package color):
+Use FontAwesome icons, per package (`fontawesome` v0.5.3; `rsvg` renders SVG →
+600×600 RGBA PNG with the shape in the alpha channel, which is chroma-keyed
+into an alpha mask and tinted with the package color):
 
 | Package | FontAwesome icon |
 |---------|------------------|
@@ -149,35 +148,30 @@ alpha mask and tinted with the package color):
   vertical axis. Guarantee the tract's **content centre-of-mass lands on the
   hex center (col W/2 = 260)** rather than centering only the bounding box.
 - Vertical placement fills the pointy-top hexagon symmetrically (apexes near
-  top/bottom), as in `logo-fiber-v15.png` / `logo-fiber-v18-test.png`.
+  top/bottom).
 
-### Render parameters (agreed) — RE-BUILD renders with these
+### Render parameters (agreed)
 
-- **30 streamlines per side** (`nL = 30`, `nR = 30`), not the old 120/side.
+- **30 streamlines per side** (`nL = 30`, `nR = 30`).
 - **Downsampling is done in the densest areas on the top area** (the crown /
   uppermost part of each bundle), so the sparse fan stays even near the apex.
-  This replaces the old uniform `sample.int(5577, 120)` / `sample.int(2397, 120)`.
-- **Re-implemented and PERSISTED** in `data-raw/crown-sample.R` (canonical;
-  supersedes the old scratch `/tmp/pa-501/logos3/crown-sample.R`):
+- **Re-implemented and PERSISTED** in `data-raw/crown-sample.R` (canonical):
   `crown_sample(bundle, n=30, z_frac=0.25)` selects the crown (points at
   Z >= zmin + 0.25*(zmax-zmin), the uppermost slab), orders streamlines by
   their crown fan position (mean X of their crown points), then takes
   DETERMINISTIC even spacing (~ns/n rank step) for full-width, even-near-apex
   coverage. `make_crown_strat(path, n)` writes the `list(iL=, iR=)` index rds.
-  This replaced the earlier interactive algorithm (lost; only its
-  `crown_strat_*.rds` outputs survived). The re-implementation matches the
-  original's measured span (left crown-X ~[-48.8,-11.1], peak-Z ~[50.4,77.1]).
-  The old `crown_strat_*.rds` indices were NOT reproducible (interactive
-  density thinning) - visual parity is the goal, validated by pixels + review.
+  The selection is validated by measurable pixel properties + user review
+  (measured span: left crown-X ~[-48.8,-11.1], peak-Z ~[50.4,77.1]).
 
 ### Build pipeline (canonical: `data-raw/`, driver = `logo-family.R`)
 
 The minimal `data-raw/` set regenerates the full 6-package light-bg family from
 scratch. Single entry point: `Rscript data-raw/logo-family.R` (from repo root;
-`--pkg fiber` smoke-tests one). Runs the v24-approved exact-symmetric butterfly:
+`--pkg fiber` smoke-tests one). Runs the exact-symmetric butterfly:
 
 1. `crown-sample.R` — `crown_sample()`, `make_crown_strat()`.
-2. `build-scene.R` — `PALETTE`, `make_scene()` (v24 `mirror_x_side="L"`
+2. `build-scene.R` — `PALETTE`, `make_scene()` (`mirror_x_side="L"`
    single-hemisphere exact-symmetric butterfly: `bL = cl[iL]`, `bR =
    mirror_x(bL)` across X=0; `cam_view=c(0,1,0)`, `cam_up=c(0,0,1)`,
    `cam_dist=1.9`), `mirror_x()`, `patch_camera()`, `patch_axes()`,
@@ -187,11 +181,9 @@ scratch. Single entry point: `Rscript data-raw/logo-family.R` (from repo root;
    black-bg screenshot and **centers the content centre-of-mass on col 260**.
 4. `screenshot.R` — chromote (the webshot2 browser lib) + a Chrome-for-Testing
    build screenshots the served widget (`--use-gl=swiftshader`, 1200x1200
-   viewport, DPR=2), replacing the old Playwright `screenshot.py`.
+   viewport, DPR=2).
 5. Widget is served in-process by **`httpuv::runStaticServer`** (no Python
    subprocess; `srv$getPort()` → `screenshot.R`; `on.exit(httpuv::stopServer)`).
-   Replaced the old python3 `http.server` + shell port-finder, whose embedded
-   single quotes broke through `sh -c`.
 
 **cl/cr sourcing**: `logo-family.R` loads CST_L/CST_R from the gitignored
 `data-raw/.render/` cache (seeded: `HCP1065_CST_L.rds` 3.08MB / `CST_R.rds`
@@ -203,11 +195,9 @@ Outputs → `inst/brand/logos/{pkg}.png` + `tractoverse.png` (1290x1680 white,
 2x3 grid on a 600x520 canvas at 1-based origins: fiber(30,30), master(30,580),
 rtists(30,1130), riot(660,30), toad(660,580), bot(660,1130)).
 
-**Determinism / v24 note**: screenshot, compose, and crown-strat are all
-deterministic (two screenshots of one scene are byte-identical; crown indices
-reproduce exactly from the cached bundles). Regenerated logos are structurally
-identical to the approved v24 (tract axis col 260, same bbox, glyph fills the
-hexagon) but NOT byte-identical: the current crown_sample is a re-implementation
-aimed at **visual parity**, and v24's original streamline indices were
-interactive/non-reproducible and deleted. Confirm with the user whether visual
-parity is acceptable before overwriting `inst/brand/logos/` (back up first).
+**Determinism**: screenshot, compose, and crown-strat are all deterministic (two
+screenshots of one scene are byte-identical; crown indices reproduce exactly
+from the cached bundles). Regenerated logos should be structurally identical to
+the shipped ones (tract axis col 260, same bbox, glyph fills the hexagon);
+verify visually via the Positron Plots pane before overwriting
+`inst/brand/logos/` (back up first).
