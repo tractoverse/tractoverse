@@ -42,6 +42,32 @@ Meta-package build-out (in progress). Status: `[ ]` = open, `[x]` = done,
       builds cleanly with the dark brand (see *pkgdown dark theme* note below).
 - [x] Update package roles across AGENTS.md / other files to the agreed role text.
 
+**Item 7 — 6-package docs/brand + protection campaign** (one package at a time,
+pausing before each `master`→`main` rename for approval):
+- [x] Fix CI macOS link error (drop `-Wl,-all_load` on static VTK link) — rvtk
+      PR #6 (`fix/macos-all-load`, base `main`).
+- [x] Fix CI `bot::optimal_transport` missing-export WARNING — bot PR #1
+      (`placeholder/optimal-transport`, base `master`).
+- [x] Add mermaid dependency diagram to tractoverse README.qmd + build_readme
+      (committed 0824643, pushed to `step6-docs-brand`).
+- [x] Decide branch protection: **per-repo, as in toad** (org rulesets blocked
+      on free plan) — see *Branch protection* decision below.
+- [~] tractoverse: push `cb7c4aa..0824643` to origin/step6-docs-brand (PR #1) —
+      **middle commits pushed; final commit pushed; verify PR page**.
+- [ ] fiber: use_logo, README.qmd + build_readme, pkgdown brand — then **pause
+      before `master`→`main` rename + protection**.
+- [ ] master (already on `main`): use_logo, README.qmd + build_readme, pkgdown
+      brand.
+- [ ] rtists: use_logo, README.qmd + build_readme, pkgdown brand — then **pause
+      before `master`→`main` rename + protection**.
+- [ ] riot: use_logo, README.qmd + build_readme, pkgdown brand — then **pause
+      before `master`→`main` rename + protection**.
+- [ ] toad (already on `main`): use_logo, README.qmd + build_readme, pkgdown
+      brand.
+- [ ] bot: use_logo, README.qmd + build_readme, pkgdown brand — then **pause
+      before `master`→`main` rename + protection**.
+- [ ] After rvtk #6 + bot #1 merge, re-run tractoverse CI to confirm green.
+
 ## Decisions log
 
 ### MIT licensing decision (Step 5, closed)
@@ -64,6 +90,33 @@ third-party JS/CSS/fonts are bundled:
   third-party copyrightable content is introduced.
 Re-check via `inst/brand/NOTICE` before shipping any new bundled asset (per the
 global licensing rule).
+
+### Branch protection (Item 7, decided)
+
+- **Org-level repository rulesets require a paid GitHub Team plan** (free orgs
+  only get classic per-repo branch protection). Org **Settings → Repository →
+  Rulesets** (https://github.com/organizations/<org>/settings/repository/rules)
+  is the correct location, but the UI blocks enforcement without the upgrade.
+- **Decision: keep free per-repo protection, modeled on toad.** Apply the same
+  policy to each remaining package as it completes its `master`→`main` rename
+  (fiber, rtists, riot, bot). `tractoverse`, `master`, `toad` are already on
+  `main`; toad is already protected.
+- **The toad model** (the template for every repo's default branch):
+  - Required PR reviews: **1** approving review (dismiss-stale off, codeowner
+    off, last-push-approval off).
+  - Required status checks: `macos-latest (release)`, `windows-latest (release)`,
+    `ubuntu-latest (devel)`, `ubuntu-latest (release)`,
+    `ubuntu-latest (oldrel-1)`, `test-coverage` — with strict = true
+    (require branches up to date).
+  - Block force-pushes (non-fast-forward): on.
+  - Enforce for admins: **off** (matches toad — admin escape hatch).
+- **Revisit org-level rulesets if the org ever upgrades to Team** — a draft
+  spec lives in the scratch copy of `tractoverse-ruleset.md` (not git-versioned).
+- `mascot` → `toad` GitHub rename is still pending (see running task list); the
+  `midi` repo is legacy (merged into `master`) and intentionally left unprotected
+  unless it needs to be archived.
+
+---
 
 ### pkgdown dark theme (pkgdown 2.2.1 architecture)
 
