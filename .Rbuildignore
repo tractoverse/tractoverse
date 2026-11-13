@@ -2,3 +2,8 @@
 ^DECISIONS\.md$
 ^AGENTS\.md$
 ^\.gitignore$
+^_pkgdown\.yml$
+^docs$
+^pkgdown$
+^\.github$
+^codecov\.yml$

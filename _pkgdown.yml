@@ -1,0 +1,34 @@
+url: https://tractoverse.github.io/tractoverse/
+template:
+  bootstrap: 5
+  bootswatch: darkly
+  # Dark syntax highlighting to match the darkly shell.
+  theme: arrow-dark
+  # pkgdown/extra.scss applies the tractoverse dark brand (shell + accent +
+  # typography) on top of the Bootswatch darkly base. Tokens mirror
+  # inst/brand/_brand.yml.
+  includes:
+    in_header: |
+      <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
+reference:
+- title: The tractoverse family
+  desc: The core packages and the shared brand.
+  contents:
+  - tractoverse_packages
+  - install_core_packages
+  - tractoverse_brand
+  - tractoverse_theme
+navbar:
+  structure:
+    left:
+    - reference
+    - articles
+    right: github
+  components:
+    reference:
+      text: Reference
+      href: reference/index.html
+    articles:
+      text: News
+      href: news/index.html
+

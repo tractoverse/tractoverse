@@ -24,7 +24,8 @@
 #'
 #' @return Invisibly, a named character vector mapping each requested package to
 #'   the outcome: `"already_installed"`, `"cran"` (installed from CRAN) or
-#'   `"github"` (installed from `tractoverse/{pkg}@main`).
+#'   `"github"` (installed from the `tractoverse` GitHub organisation).
+#' @importFrom stats setNames
 #' @export
 install_core_packages <- function(
     packages  = names(tractoverse_packages()),

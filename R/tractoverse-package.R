@@ -18,3 +18,21 @@
 #'
 #' @keywords internal
 "_PACKAGE"
+
+# Attach the core family when the meta-package is loaded, tidyverse-style.
+# The core packages stay listed in `Imports:` (so they are present and correct
+# for `R CMD check` / CRAN), and this hook attaches them to the search path so
+# `library(tractoverse)` brings the whole family into scope. Each attachment is
+# guarded so an unavailable package cannot prevent loading the meta-package.
+.onAttach <- function(libname, pkgname) {
+  core <- names(tractoverse_packages())
+  for (pkg in core) {
+    tryCatch(
+      suppressPackageStartupMessages(
+        library(pkg, character.only = TRUE)
+      ),
+      error = function(e) NULL
+    )
+  }
+  invisible()
+}

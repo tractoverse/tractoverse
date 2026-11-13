@@ -23,17 +23,46 @@ Meta-package build-out (in progress). Status: `[ ]` = open, `[x]` = done,
       rename tractoverse/mascot -> tractoverse/toad still pending** (after it,
       .git/config origin and the release-download URLs already point to toad and
       will follow the redirect).
-- [ ] Install core packages preferably from CRAN if available, else main branch
-      of repo -> add `install_core_packages()` (tractoverse should NOT list core
-      packages in `Imports:`; export a function that (i) lets the user select
-      which package(s) to install, default all 6, and (ii) prefers the CRAN
-      version if available, else the main branch).
+- [x] Install core packages preferably from CRAN if available, else main branch
+      of repo -> add `install_core_packages()` (committed b41c15d). Note: bot's
+      default branch is `master` (only family member not on `main`), so a
+      `branch="main"` default fails for bot; install via `ref="master"`.
 - [ ] Confirm MIT licensing is appropriate for the pieces involved.
-- [ ] Roxygenize/document (now that bot + master are installable), add README +
-      `_pkgdown.yml` + brand.
-- [ ] Update package roles across AGENTS.md / other files to the agreed role text.
+- [x] Roxygenize/document (bot + master installable), add README +
+      `_pkgdown.yml` + brand. `.onAttach()` hook attaches the 6 core packages
+      (tidyverse-style). R CMD check: 0 WARNING, 2 deliberate NOTEs (Imports
+      unused for meta-package; .onAttach changes search path). pkgdown site
+      builds cleanly with the dark brand (see *pkgdown dark theme* note below).
+- [x] Update package roles across AGENTS.md / other files to the agreed role text.
 
 ## Decisions log
+
+### pkgdown dark theme (pkgdown 2.2.1 architecture)
+
+The dark brand for the pkgdown site is wired via `template.bootstrap: 5` +
+`template.bootswatch: darkly` + `template.theme: arrow-dark` +
+`pkgdown/extra.scss` in `_pkgdown.yml`.
+
+**There is no separate `pkgdown.css` file in pkgdown 2.2.1 for Bootstrap 5.**
+Custom Sass is compiled by bslib directly into
+`docs/deps/bootstrap-5.3.8/bootstrap.min.css` (via `build_bslib()`). A "missing
+pkgdown.css" therefore does NOT mean the theme failed — the compiled
+`bootstrap.min.css` should contain `--bslib-preset-name: darkly`, the
+`extra.scss` brand tokens (e.g. `#0d1117` bg, `#58a6ff` accent, `#161b22`
+surface), and the `pre code span.*` arrow-dark highlighting rules. Verify by
+grepping those markers in the compiled file.
+
+`pkgdown/` being in `.Rbuildignore` is irrelevant: `bs_theme_rules()` reads
+`pkg/extra.scss` via `pkg$src_path` from the source directory, not the
+temp-installed library. `template.theme` (default `arrow-light`) controls the
+syntax-highlight palette independent of the lightswitch toggle; set
+`arrow-dark` for a dark shell.
+
+`build_site()` reports an accessibility check for README images missing
+alt-text — give the color swatches descriptive alt text (e.g. "fiber signature
+color #59aaea").
+
+---
 
 ### Filenames
 
