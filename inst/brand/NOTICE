@@ -9,7 +9,7 @@ every vendored or bundled component, in line with the package licensing rule
 1. Font Awesome (icon glyphs embedded in the package logos)
    ---------------------------------------------------------
    The per-package emblems (fiber: bezier-curve, master: blender, rtists:
-   palette, riot: feather-pointed, mascot: book-atlas, bot:
+   palette, riot: feather-pointed, toad: book-atlas, bot:
    magnifying-glass-chart) are Font Awesome Free icons.
    - Source: Font Awesome Free (https://fontawesome.com),
      FortAwesome/Font-Awesome (github.com/FortAwesome/Font-Awesome), Free 6.5.2.

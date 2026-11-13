@@ -29,7 +29,7 @@ logo:
     master:      logos/master.png
     rtists:      logos/rtists.png
     riot:        logos/riot.png
-    mascot:      logos/mascot.png
+    toad:        logos/toad.png
     bot:         logos/bot.png
   medium: tractoverse
 
@@ -55,7 +55,7 @@ color:
     master-orange:"#ff9441"   # master  : bundle / microstructure simulator
     rtists-purple:"#a980fc"   # rtists  : interactive 3D visualization
     riot-teal:    "#3ec4b2"   # riot    : I/O data flows
-    mascot-yellow:"#ffcf1b"   # mascot  : curated reference datasets
+    toad-yellow: "#ffcf1b"   # toad    : curated reference datasets
     bot-green:    "#3fb950"   # bot     : bundle optimal transport
 
   # --- semantic roles -------------------------------------------------------
@@ -75,7 +75,7 @@ color:
   master: master-orange
   rtists: rtists-purple
   riot:   riot-teal
-  mascot: mascot-yellow
+  toad: toad-yellow
   bot:    bot-green
 
 typography:

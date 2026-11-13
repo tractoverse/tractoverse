@@ -8,12 +8,12 @@
 #' @export
 tractoverse_packages <- function() {
   c(
-    fiber  = "S7 data structures (streamline, bundle, bundle_set)",
-    master = "Simulation of bundles and microstructural attributes",
-    rtists = "Interactive 3D visualization of tractography",
-    riot   = "Input/output for tractography formats",
-    mascot = "Curated reference datasets",
-    bot    = "Bundle optimal transport"
+    fiber  = "Data structures for tractography data",
+    master = "Simulation of streamlines / bundles / bundle sets with microstructural parameters",
+    rtists = "Visualization",
+    riot   = "Data I/O (through rvtk)",
+    toad   = "Tractography Open Atlases Data (companion dataset package)",
+    bot    = "Bundle optimal transport; statistical methods for tractography data"
   )
 }
 
@@ -40,7 +40,7 @@ tractoverse_brand <- function() {
       master = "#ff9441",
       rtists = "#a980fc",
       riot   = "#3ec4b2",
-      mascot = "#ffcf1b",
+      toad   = "#ffcf1b",
       bot    = "#3fb950"
     ),
     packages = tractoverse_packages()
