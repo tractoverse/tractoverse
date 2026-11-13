@@ -27,7 +27,14 @@ Meta-package build-out (in progress). Status: `[ ]` = open, `[x]` = done,
       of repo -> add `install_core_packages()` (committed b41c15d). Note: bot's
       default branch is `master` (only family member not on `main`), so a
       `branch="main"` default fails for bot; install via `ref="master"`.
-- [ ] Confirm MIT licensing is appropriate for the pieces involved.
+- [x] Confirm MIT licensing is appropriate for the pieces involved. MIT is
+      appropriate (see *MIT licensing decision* below). tractoverse ships only
+      in-house artwork (logos/theme/palette from the user's own useR! 2026
+      talk) plus Font Awesome Free icon glyphs embedded in the logos (CC BY 4.0
+      with attribution recorded in inst/brand/NOTICE). No third-party
+      JS/CSS/fonts are bundled: three.js stays in rtists (MIT, not
+      redistributed here), and Inter/JetBrains Mono are loaded at runtime from
+      Google Fonts (SIL OFL 1.1), not vendored.
 - [x] Roxygenize/document (bot + master installable), add README +
       `_pkgdown.yml` + brand. `.onAttach()` hook attaches the 6 core packages
       (tidyverse-style). R CMD check: 0 WARNING, 2 deliberate NOTEs (Imports
@@ -36,6 +43,27 @@ Meta-package build-out (in progress). Status: `[ ]` = open, `[x]` = done,
 - [x] Update package roles across AGENTS.md / other files to the agreed role text.
 
 ## Decisions log
+
+### MIT licensing decision (Step 5, closed)
+
+The meta-package is `MIT + file LICENSE` (Copyright 2026 Aymeric Stamm). This is
+appropriate: the package redistributes ONLY in-house artwork (logos, theme SCSS,
+palette, all derived from the user's own useR! 2026 talk) plus Font Awesome Free
+icon glyphs rasterized into the logos, which is permitted under CC BY 4.0 with
+attribution (recorded in `inst/brand/NOTICE`, which also covers the three.js
+render-scene provenance even though three.js is NOT redistributed here). No
+third-party JS/CSS/fonts are bundled:
+- **three.js** stays in rtists (MIT) — tractoverse ships only the PNG renders.
+- **Inter / JetBrains Mono** are declared `source: google` and loaded at runtime
+  from Google Fonts (both SIL OFL 1.1) — not vendored, so no redistribution
+  concern. Switching to self-hosted copies later WOULD require OFL notice +
+  rename compliance, so prefer keeping Google-hosted if possible.
+- **pkgdown favicons** are rasterized from the in-house tractoverse logo by the
+  RealFaviconGenerator service (attribution metadata embedded in
+  `pkgdown/favicon/favicon.svg`); the output is the user's own artwork, so no
+  third-party copyrightable content is introduced.
+Re-check via `inst/brand/NOTICE` before shipping any new bundled asset (per the
+global licensing rule).
 
 ### pkgdown dark theme (pkgdown 2.2.1 architecture)
 

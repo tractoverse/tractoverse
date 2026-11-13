@@ -42,6 +42,15 @@ every vendored or bundled component, in line with the package licensing rule
    htmlwidgets (MIT) and htmltools fill.css. These are development-only render
    previews and are not shipped with tractoverse.
 
+4. pkgdown favicons (derived from the in-house tractoverse logo)
+   -------------------------------------------------------------
+   `pkgdown/favicon/*` are favicon sizes rasterized from the in-house
+   tractoverse logo by the RealFaviconGenerator service
+   (https://realfavicongenerator.net). The output is the user's own artwork at
+   various resolutions, so no third-party copyrightable content is introduced;
+   the service applies no license to the generated images. The SVG carries its
+   metadata attribution (`dc:creator` / `dc:source`) in-file.
+
 Provenance of the tractoverse brand palette
 -------------------------------------------
 The brand palette (GitHub-dark shell #0d1117 + per-package vibrant hues) is
