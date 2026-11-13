@@ -1,0 +1,4 @@
+^data-raw$
+^DECISIONS\.md$
+^AGENTS\.md$
+^\.gitignore$
