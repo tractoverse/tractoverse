@@ -4,3 +4,6 @@
 .httr-oauth
 .DS_Store
 .quarto
+
+# logo-family build intermediates (bundle cache + served widgets + renders)
+data-raw/.render/

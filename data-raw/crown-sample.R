@@ -1,4 +1,4 @@
-# crown_sample.R - re-implementation of the "densest-top" crown-stratified
+# crown-sample.R - re-implementation of the "densest-top" crown-stratified
 # downsampling (persisted this time; the v18-test-era algorithm was interactive
 # only and lost). Goal (per tractoverse AGENTS.md): select `n` streamlines per
 # side, with the downsampling concentrated in the densest areas at the top

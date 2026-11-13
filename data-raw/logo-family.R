@@ -1,248 +1,192 @@
 # =============================================================================
-# logo-family.R -- shared tractoverse logo family generator
+# logo-family.R -- v24 driver: regenerate the whole 6-package logo family.
 # =============================================================================
-# Renders one hexagon logo per package (fiber, master, rtists, riot, mascot,
-# bot), all on the shared brand shell (#0d1117) with a per-package signature
-# color glyph + white wordmark. Output is written to OUT_DIR; copy each
-# PNG into its package's `man/figures/logo.png` and the tractoverse
-# `inst/brand/logos/` dir when satisfied.
+# Regenerates the light-bg logo family (fiber, master, rtists, riot, toad,
+# bot) plus the 2x3 montage from scratch. Single entry point; supersedes the
+# obsolete ggplot-era dark-shell generator of the same name.
 #
-# Provenance: colors from the tractoverse useR! 2026 talk custom.css and the
-# tractoverse _brand.yml. Uses only ggplot2 + png (no rgl) so it is fully
-# reproducible headless.
+# Pipeline (per package):
+#   1. crown-stratified 30/side sampling of the CST bundles (exact-symmetric
+#      butterfly: one hemisphere crown-sampled, then the opposite wing is its
+#      reflection across X=0 via `mirror_x_side="L"`).
+#   2. make_scene() -> served threejs widget (patched camera/axes) in a
+#      gitignored work dir (`data-raw/.render/`).
+#   3. screenshot the widget with screenshot.R (chromote / webshot2, R).
+#   4. compose_logo() -> light-bg hex + FontAwesome icon + name -> PNG into
+#      `inst/brand/logos/`.
+#   5. assemble the 2x3 montage -> `tractoverse.png`.
+#
+# Sourcing cl/cr: from the `.render/` cache (gitignored). On a cold cache the
+# bundles are pulled from `toad::HCP1065_CST_L/R()` (a GitHub-releases
+# download) and cached so later runs are fast and offline. cl = 5577 / cr =
+# 2397 streamlines are the ground-truth CST source for the glyph.
+#
+# Requires (R): fiber, rtists, htmlwidgets, png, fontawesome, rsvg; plus
+#   chromote (a webshot2 dependency) + a Chrome-for-Testing build for the
+#   headless screenshot. Run with `--pkg fiber` to test a single package first;
+#   run with no args to build all 6 + montage.
 # =============================================================================
 
 suppressMessages({
-  library(ggplot2)
+  library(fiber)
+  library(rtists)
+  library(htmlwidgets)
   library(png)
-  library(grid)
+  library(httpuv)
 })
+suppressMessages(library(fontawesome))
+suppressMessages(library(rsvg))
 
-# -----------------------------------------------------------------------------
-# Brand tokens
-# -----------------------------------------------------------------------------
-BG      <- "#0d1117"          # shell / hexagon background
-SURF    <- "#161b22"          # subtle inner panel
-FG      <- "white"            # wordmark + glyph stroke
-SIG     <- c(fiber  = "#59aaea",
-             master = "#ff9441",
-             rtists = "#a980fc",
-             riot   = "#3ec4b2",
-             mascot = "#ffcf1b",
-             bot    = "#3fb950")
+# ---- command line: allow a single-package smoke test ------------------------
+args <- commandArgs(trailingOnly = TRUE)
+only_pkg <- NULL
+if ("--pkg" %in% args) only_pkg <- args[which(args == "--pkg") + 1L]
 
-OUT     <- Sys.getenv("PA_SCRATCH_DIR", "/tmp/pa-501")
-OUT_DIR <- if (nzchar(OUT) && dir.exists(OUT)) file.path(OUT, "logos") else "logos"
-dir.create(OUT_DIR, showWarnings = FALSE, recursive = TRUE)
-
-# -----------------------------------------------------------------------------
-# Shared hexagon geometry (flat-top, centered at origin, radius r)
-# -----------------------------------------------------------------------------
-hex_point <- function(r, i) {
-  a <- pi / 6 + (i - 1) * pi / 3
-  c(x = r * cos(a), y = r * sin(a))
-}
-hex_df <- function(r, n = 6) {
-  i <- seq_len(n)
-  theta <- pi / 6 + (i - 1) * pi / 3
-  data.frame(x = r * cos(theta), y = r * sin(theta))
-}
-# clip path polygon (for hex-shaped glyph region at unit scale -> we apply in plot)
-hexpath <- hex_df(1)
-hexpath <- rbind(hexpath, hexpath[1, ])  # close the loop
-
-# -----------------------------------------------------------------------------
-# Shared plotting canvas
-# -----------------------------------------------------------------------------
-base_plot <- function(sig) {
-  ggplot() +
-    # hexagon shell
-    geom_polygon(data = hex_df(1), aes(x, y),
-                 fill = BG, color = "#30363d", linewidth = 0.9) +
-    # inner subtle panel for glyph area
-    geom_polygon(data = hex_df(0.83), aes(x, y),
-                 fill = SURF, color = "NA") +
-    coord_fixed(ratio = 1, xlim = c(-1.08, 1.08), ylim = c(-1.08, 1.15)) +
-    theme_void() +
-    theme(plot.margin = margin(0, 0, 0, 0),
-          plot.background = element_rect(fill = "transparent", color = NA)) +
-    scale_color_identity() + scale_fill_identity()
-}
-
-# wordmark across the bottom
-wordmark <- function(label, size = 5.2) {
-  annotate("text", x = 0, y = -0.92, label = label, size = size,
-           color = FG, family = "sans", fontface = "bold",
-           lineheight = 0.9)
-}
-# per-package small monospace role tag under the wordmark
-roletag <- function(txt) {
-  annotate("text", x = 0, y = -1.10, label = txt, size = 3.0,
-           color = "#8b949e", family = "mono")
-}
-
-hex_theme <- theme_void() +
-  theme(plot.margin = margin(0, 0, 0, 0),
-        plot.background = element_rect(fill = "transparent", color = NA))
-
-# -----------------------------------------------------------------------------
-# Glyph builders (each returns a ggplot layer, using sig color)
-# -----------------------------------------------------------------------------
-
-# fiber: a single clean streamline sweeping across the glyph (data backbone)
-glyph_fiber <- function(sig) {
-  t <- seq(-0.62, 0.62, length.out = 200)
-  df <- data.frame(
-    x = t,
-    y = 0.42 * sin(pi * (t + 0.62) / 1.24)   # gentle S-curve
-  )
-  df2 <- data.frame(x = -df$x, y = -df$y)      # mirrored second streamline
-  list(
-    geom_line(data = df,  aes(x, y), color = sig, linewidth = 1.6),
-    geom_line(data = df2, aes(x, y), color = sig, linewidth = 1.6, alpha = 0.55),
-    geom_point(data = data.frame(x = 0, y = 0), aes(x, y),
-               color = "white", size = 1.4)
-  )
-}
-
-# master: crossing hyperbola centerlines + perturbed axon fan (simulator)
-glyph_master <- function(sig) {
-  t <- seq(-0.72, 0.72, length.out = 300)
-  # two crossing arms sweeping bottom-left -> top-right and opposite
-  df <- rbind(
-    data.frame(x = t,             y = 0.55 * t^2 - 0.42, grp = "a"),  # parabola down
-    data.frame(x = t,             y = -0.55 * t^2 + 0.42, grp = "b")  # parabola up
-  )
-  layers <- list()
-  layers <- c(layers, list(geom_line(data = df, aes(x, y, group = grp),
-                                     color = sig, linewidth = 1.6)))
-  # perturbed axon fan: short segment stubs radiating from centre
-  set.seed(7)
-  for (ang in seq(0, pi - 0.35, length.out = 6)) {
-    r0 <- 0.12; r1 <- 0.42
-    x0 <- r0 * cos(ang); y0 <- r0 * sin(ang)
-    dx <- (r1 - r0) * cos(ang) + rnorm(1, 0, 0.04)
-    dy <- (r1 - r0) * sin(ang) + rnorm(1, 0, 0.04)
-    layers <- c(layers, list(geom_segment(
-      data = data.frame(x = x0, y = y0, xend = x0 + dx, yend = y0 + dy),
-      aes(x, y, xend = xend, yend = yend),
-      color = sig, linewidth = 0.7, alpha = 0.6)))
+# ---- locations ----------------------------------------------------------------
+# Anchor to the package repo root (parent of data-raw) regardless of how the
+# script is invoked. The script always lives in data-raw/, so the package root
+# is one level up from the script's directory. All of these resolve correctly:
+#   * Rscript data-raw/logo-family.R (repo root)        -> --file -> step up
+#   * Rscript --file=/abs/.../data-raw/logo-family.R    -> --file -> step up
+#   * sourced interactively from repo root (getwd)      -> step up if in data-raw
+resolve_root <- function() {
+  args <- commandArgs(trailingOnly = FALSE)
+  file_arg <- grep("^--file=", args, value = TRUE)
+  if (length(file_arg)) {
+    script <- normalizePath(sub("^--file=", "", file_arg[1]), mustWork = TRUE)
+    root <- dirname(dirname(script))
+  } else {
+    root <- normalizePath(getwd(), mustWork = TRUE)
   }
-  layers
+  # be defensive: if someone points us at data-raw (or a plain repo root),
+  # normalize so ROOT is always the parent of data-raw.
+  if (basename(root) == "data-raw") root <- dirname(root)
+  root
 }
-
-# rtists: a cluster of 3D-rendered tubes (central rod + elliptical cross-section)
-glyph_rtists <- function(sig) {
-  t <- seq(-0.45, 0.45, length.out = 120)
-  # central vertical rod
-  rod <- data.frame(x = t, y = 0)
-  # two angled tubes passing behind / in front
-  tb <- data.frame(x = -0.42 * sin(pi * (t + 0.45) / 0.9), y = t)
-  tc <- data.frame(x =  0.09 + 0.42 * sin(pi * (t + 0.45) / 0.9), y = t * 0.9)
-  ell <- function(cx, cy, r, col, alpha) {
-    a <- seq(0, 2 * pi, length.out = 60)
-    data.frame(x = cx + r * cos(a), y = cy + 0.32 * r * sin(a))
-  }
-  list(
-    geom_path(data = tb, aes(x, y), color = sig, linewidth = 1.5, alpha = 0.75),
-    geom_path(data = tc, aes(x, y), color = sig, linewidth = 1.5, alpha = 0.75),
-    geom_path(data = rod, aes(x, y), color = sig, linewidth = 2.6),
-    geom_polygon(data = ell(0.0, 0.0, 0.17, sig, 0.9), aes(x, y),
-                 fill = sig, color = "white", linewidth = 0.7, alpha = 0.9)
-  )
+ROOT <- resolve_root()
+DATA_RAW <- file.path(ROOT, "data-raw")
+if (!file.exists(file.path(DATA_RAW, "crown-sample.R"))) {
+  stop("could not locate data-raw/ (crown-sample.R missing); run from the repo root")
 }
+WORK     <- file.path(DATA_RAW, ".render")          # gitignored intermediates
+SERVE    <- file.path(WORK, "serve")                # served widget dir (httpuv root)
+LOGO_OUT <- file.path(ROOT, "inst", "brand", "logos")
+dir.create(WORK,    showWarnings = FALSE, recursive = TRUE)
+dir.create(SERVE,   showWarnings = FALSE, recursive = TRUE)
+dir.create(LOGO_OUT, showWarnings = FALSE, recursive = TRUE)
 
-# riot: in/out arrows around a central streamline (I/O flows)
-glyph_riot <- function(sig) {
-  t <- seq(-0.42, 0.42, length.out = 120)
-  core <- data.frame(x = 0.4 * t, y = t)
-  core2 <- data.frame(x = 0.26, y = -t)  # vertical-ish secondary
-  arrows <- data.frame(
-    x  = c(-0.72, 0.72, 0.40, -0.30),
-    y  = c( 0.10,-0.10, 0.60, -0.55),
-    xe = c(-0.28, 0.28, 0.58, -0.08),
-    ye = c( 0.32,-0.32, 0.42, -0.38)
-  )
-  list(
-    geom_path(data = core, aes(x, y), color = sig, linewidth = 1.7),
-    geom_path(data = core2, aes(x, y), color = sig, linewidth = 1.2, alpha = 0.6),
-    geom_segment(data = arrows, aes(x, y, xend = xe, yend = ye),
-                 color = sig, linewidth = 1.1,
-                 arrow = arrow(length = unit(0.09, "inches"), type = "closed"))
-  )
-}
+# ---- source the shared helpers -------------------------------------------------
+source(file.path(DATA_RAW, "crown-sample.R"))       # crown_sample(), make_crown_strat()
+source(file.path(DATA_RAW, "build-scene.R"))        # make_scene(), PALETTE, mirror_*, patches
+source(file.path(DATA_RAW, "compose-core.R"))       # low-level raster helpers
+source(file.path(DATA_RAW, "compose-logo.R"))       # compose_logo(), fa_tile()
 
-# mascot: an archive chest / drawer of datasets
-glyph_mascot <- function(sig) {
-  list(
-    # chest body
-    geom_rect(data = data.frame(xmin = -0.45, xmax = 0.45, ymin = -0.35, ymax = 0.35),
-              aes(xmin = xmin, xmax = xmax, ymin = ymin, ymax = ymax),
-              fill = BG, color = sig, linewidth = 1.5),
-    # lid band
-    geom_rect(data = data.frame(xmin = -0.50, xmax = 0.50, ymin = 0.20, ymax = 0.34),
-              aes(xmin = xmin, xmax = xmax, ymin = ymin, ymax = ymax),
-              fill = sig, color = NA),
-    # handle
-    geom_segment(data = data.frame(x = -0.18, y = 0.12, xe = 0.18, ye = 0.12),
-                 aes(x, y, xend = xe, yend = ye), color = sig, linewidth = 1.2),
-    # stacked data "plates" inside
-    geom_segment(data = data.frame(x = -0.30, y = -0.18, xe = 0.30, ye = -0.18),
-                 aes(x, y, xend = xe, yend = ye), color = sig, linewidth = 0.9, alpha = 0.7),
-    geom_segment(data = data.frame(x = -0.30, y = -0.02, xe = 0.30, ye = -0.02),
-                 aes(x, y, xend = xe, yend = ye), color = sig, linewidth = 0.9, alpha = 0.7)
-  )
-}
-
-# bot: two point blobs with a transport/coupling arrow (optimal transport)
-glyph_bot <- function(sig) {
-  blobs <- function(cx, cy, r, fill) {
-    a <- seq(0, 2 * pi, length.out = 80)
-    data.frame(x = cx + r * cos(a), y = cy + r * sin(a))
-  }
-  list(
-    geom_polygon(data = blobs(-0.40, 0, 0.20, sig), aes(x, y),
-                 fill = sig, color = NA, alpha = 0.85),
-    geom_polygon(data = blobs(0.40, 0, 0.20, sig), aes(x, y),
-                 fill = sig, color = NA, alpha = 0.85),
-    geom_segment(data = data.frame(x = -0.12, y = -0.05, xe = 0.12, ye = 0.05),
-                 aes(x, y, xend = xe, yend = ye), color = "white",
-                 linewidth = 1.3,
-                 arrow = arrow(length = unit(0.12, "inches"), type = "closed"))
-  )
-}
-
-# -----------------------------------------------------------------------------
-# Package registry -> glyph + wordmark + role tag
-# -----------------------------------------------------------------------------
-PKGS <- list(
-  fiber  = list(glyph = glyph_fiber,  word = "fiber",  tag = "data structures",
-                file = "fiber.png"),
-  master = list(glyph = glyph_master, word = "master", tag = "simulation",
-                file = "master.png"),
-  rtists = list(glyph = glyph_rtists, word = "rtists", tag = "3D visualization",
-                file = "rtists.png"),
-  riot   = list(glyph = glyph_riot,   word = "riot",   tag = "input / output",
-                file = "riot.png"),
-  mascot = list(glyph = glyph_mascot, word = "mascot", tag = "reference data",
-                file = "mascot.png"),
-  bot    = list(glyph = glyph_bot,    word = "bot",    tag = "optimal transport",
-                file = "bot.png")
+# ---- per-package brand config (single source of truth = DECISIONS.md + ground truth)
+BG_EXACT <- c(   # light backgrounds = white + ~87% lightened signature color
+  fiber  = "#E9F4FC", master = "#FFF1E6", rtists = "#F4EEFF",
+  riot   = "#E6F7F5", toad   = "#FFF9E1", bot    = "#E6F6E8"
 )
-
-render_logo <- function(name, spec, width = 1200) {
-  p <- base_plot(SIG[[name]]) +
-    spec$glyph(SIG[[name]]) +
-    wordmark(spec$word) +
-    roletag(spec$tag)
-  f <- file.path(OUT_DIR, spec$file)
-  ggsave(f, p, width = width/300, height = width/300, dpi = 300, bg = "transparent")
-  message(sprintf("wrote %-8s -> %s", name, f))
+ICONS <- c(      # FontAwesome emblem per package
+  fiber  = "bezier-curve",            master = "blender",
+  rtists = "palette",                 riot   = "feather-pointed",
+  toad   = "book-atlas",              bot    = "magnifying-glass-chart"
+)
+PKGS <- names(ICONS)
+if (!is.null(only_pkg)) {
+  if (!only_pkg %in% PKGS) stop("unknown package: ", only_pkg)
+  PKGS <- only_pkg
 }
 
-# -----------------------------------------------------------------------------
-# Render everything
-# -----------------------------------------------------------------------------
-for (nm in names(PKGS)) render_logo(nm, PKGS[[nm]])
+# ---- 1. load cl (CST_L) + cr (CST_R) from .render/ cache, else from toad ----
+cl_path <- file.path(WORK, "HCP1065_CST_L.rds")
+cr_path <- file.path(WORK, "HCP1065_CST_R.rds")
+if (!file.exists(cl_path) || !file.exists(cr_path)) {
+  message("Cold cache: pulling CST bundles from toad (HCP1065 download)...")
+  cl <- toad::HCP1065_CST_L()
+  cr <- toad::HCP1065_CST_R()
+  saveRDS(cl, cl_path)
+  saveRDS(cr, cr_path)
+} else {
+  cl <- readRDS(cl_path)
+  cr <- readRDS(cr_path)
+}
+stopifnot(length(cl@streamlines) == 5577L,
+          length(cr@streamlines) == 2397L)
 
-message("\nAll 6 logos rendered to: ", OUT_DIR)
+# ---- 2. crown-stratified indices (30/side), deterministic --------------------
+idx <- make_crown_strat(file.path(WORK, "crown_strat_30.rds"), n = 30, z_frac = 0.25)
+
+# ---- helpers: serve the widget dir via httpuv (no subprocess needed) -----------
+# httpuv::runStaticServer serves SERVE in the background and reports its own free
+# port; the returned server object is stopped via on.exit. This replaces the old
+# python3 http.server + shell port-finding (which broke on embedded quotes).
+
+# ---- 3-5. render + screenshot + compose each package ---------------------------
+srv <- httpuv::runStaticServer(dir = SERVE, host = "127.0.0.1",
+                               port = httpuv::randomPort(), background = TRUE,
+                               browse = FALSE)
+srv_port <- srv$getPort()
+message(sprintf("httpuv static server on port %d (root %s)", srv_port, SERVE))
+on.exit(try(httpuv::stopServer(srv), silent = TRUE), add = TRUE)
+
+for (pkg in PKGS) {
+  scene_dir <- file.path(SERVE, pkg)
+  message(sprintf("\n== %s: building scene", pkg))
+  make_scene(
+    pkg = pkg,
+    dir = scene_dir,
+    mode = "line2",
+    linewidth = 1.6,
+    opacity = 0.9,
+    bg  = "#000000",
+    color = "white",
+    width  = 1200,
+    height = 1000,
+    splay = 0,
+    crown_idx = file.path(WORK, "crown_strat_30.rds"),
+    mirror_x_side = "L",
+    cam_view = c(0, 1, 0),
+    cam_up   = c(0, 0, 1),
+    cam_dist = 1.9,
+    patch = TRUE
+  )
+
+  render_png <- file.path(WORK, sprintf("%s-render.png", pkg))
+  message(sprintf("== %s: screenshot", pkg))
+  code <- system2(file.path(R.home("bin"), "Rscript"),
+                  c(file.path(DATA_RAW, "screenshot.R"), pkg, render_png,
+                    as.character(srv_port)),
+                  wait = TRUE)
+  if (!identical(code, 0L)) {
+    stop(sprintf("screenshot.R failed for %s (exit %d)", pkg, code))
+  }
+
+  out_png <- file.path(LOGO_OUT, sprintf("%s.png", pkg))
+  message(sprintf("== %s: compose -> %s", pkg, out_png))
+  compose_logo(
+    render_path = render_png,
+    pal      = PALETTE[[pkg]],
+    name     = pkg,
+    bg_color = BG_EXACT[[pkg]],
+    icon     = ICONS[[pkg]],
+    out_path = out_png
+  )
+}
+
+# ---- montage: white 1290x1680, 2x3 grid at 1-based origins (oy, ox) ----------
+if (length(PKGS) == 6L) {
+  message("\n== assembling montage")
+  origins <- data.frame(
+    pkg = c("fiber", "master", "rtists", "riot", "toad", "bot"),
+    oy  = c(30, 30, 30, 660, 660, 660),
+    ox  = c(30, 580, 1130, 30, 580, 1130)
+  )
+  canvas <- array(1, c(1290, 1680, 4))
+  for (i in seq_len(nrow(origins))) {
+    o <- origins[i, ]
+    im <- readPNG(file.path(LOGO_OUT, sprintf("%s.png", o$pkg))) # 600 x 520 x 4
+    canvas[o$oy:(o$oy + 599), o$ox:(o$ox + 519), ] <- im[1:600, 1:520, ]
+  }
+  writePNG(canvas, file.path(LOGO_OUT, "tractoverse.png"))
+}
+message("logo-family.R done")

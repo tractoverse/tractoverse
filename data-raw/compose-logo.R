@@ -1,6 +1,6 @@
-# compose_logo6.R - light-bg compositor for the full 6-package logo family.
+# compose-logo.R - light-bg compositor for the full 6-package logo family.
 #
-# Key differences from compose_logo5 / the inline v14-v17 builders:
+# Key differences from the inline v14-v17 builders:
 #  * The tract is centered HORIZONTALLY by its CONTENT centre-of-mass (not by its
 #    bounding box). The rendered two-tract scene has a mild left/right mass
 #    imbalance (the anatomy halves differ), so bbox-centering leaves the glyph
@@ -190,7 +190,7 @@ ic_place <- function(
 }
 
 # ----- compositor -----
-compose_logo6 <- function(
+compose_logo <- function(
   render_path,
   pal,
   name,
