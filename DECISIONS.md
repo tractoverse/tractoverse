@@ -69,9 +69,14 @@ pausing before each `master`→`main` rename for approval):
       1 approving review + required `pkgdown` status check (strict), force-push
       block, enforce-admins off — NOT the full toad 6-check model, since master
       does not run those checks.
-- [ ] rtists: use_logo (**authored `inst/brand/logos/rtists.png`**), README.qmd +
-      build_readme, pkgdown brand (`#a980fc`) — then **pause
-      before `master`→`main` rename + protection**.
+- [x] rtists: pkgdown brand (`#a980fc`; dark darkly + arrow-dark theme,
+      extra.scss tokens, authored logo at `man/figures/logo.png`, favicons,
+      pkgdown in Suggests) committed on `fix/brand-docs` (PR #2). README.qmd
+      already referenced the logo path (README.md now resolves it); no further
+      build_readme needed. NOTE: `_pkgdown.yml` articles currently list only
+      `rtists` — `rtists-api` must be readded once the `threejs-binary-backend`
+      PR (#1, which introduces that vignette) merges. **PAUSED: awaiting approval
+      for `master`→`main` rename + protection**.
 - [ ] riot: use_logo (**authored `inst/brand/logos/riot.png`**; currently uses a
       non-authored logo), README.qmd + build_readme, pkgdown brand (`#3ec4b2`)
       — then **pause before `master`→`main` rename + protection**.
