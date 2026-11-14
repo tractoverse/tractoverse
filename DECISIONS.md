@@ -54,16 +54,28 @@ pausing before each `master`→`main` rename for approval):
       on free plan) — see *Branch protection* decision below.
 - [~] tractoverse: push `cb7c4aa..0824643` to origin/step6-docs-brand (PR #1) —
       **middle commits pushed; final commit pushed; verify PR page**.
-- [ ] fiber: use_logo, README.qmd + build_readme, pkgdown brand — then **pause
+- [x] fiber: pkgdown dark brand (committed 5599b11 on
+      `fix/bundle-set-methods-and-attributes`); **logo corrected** to authored
+      `inst/brand/logos/fiber.png` + favicons regenerated + dropped obsolete
+      `data-raw/logo-fiber.R` (committed f3da830). **Rename + protection still
+      DEFERRED** per user choice.
+- [x] master (already on `main`): pkgdown dark brand + README (committed
+      49d5b10); **logo corrected** to authored `inst/brand/logos/master.png` +
+      favicons regenerated (committed 10d1ca2). Protection per toad model
+      still to apply.
+- [ ] rtists: use_logo (**authored `inst/brand/logos/rtists.png`**), README.qmd +
+      build_readme, pkgdown brand (`#a980fc`) — then **pause
       before `master`→`main` rename + protection**.
-- [ ] master (already on `main`): use_logo, README.qmd + build_readme, pkgdown
-      brand.
-- [ ] rtists: use_logo, README.qmd + build_readme, pkgdown brand — then **pause
+- [ ] riot: use_logo (**authored `inst/brand/logos/riot.png`**; currently uses a
+      non-authored logo), README.qmd + build_readme, pkgdown brand (`#3ec4b2`)
+      — then **pause before `master`→`main` rename + protection**.
+- [ ] toad (already on `main`): use_logo (**authored
+      `inst/brand/logos/toad.png`**; currently uses a non-authored logo),
+      README.qmd + build_readme, pkgdown brand (`#ffcf1b`).
+- [ ] bot: use_logo (**authored `inst/brand/logos/bot.png`**; no logo yet),
+      README.qmd + build_readme, pkgdown brand (`#3fb950`; also needs
+      use_pkgdown_github_pages + DESCRIPTION license cleanup) — then **pause
       before `master`→`main` rename + protection**.
-- [ ] riot: use_logo, README.qmd + build_readme, pkgdown brand — then **pause
-      before `master`→`main` rename + protection**.
-- [ ] toad (already on `main`): use_logo, README.qmd + build_readme, pkgdown
-      brand.
 - [ ] bot: use_logo, README.qmd + build_readme, pkgdown brand — then **pause
       before `master`→`main` rename + protection**.
 - [ ] After rvtk #6 + bot #1 merge, re-run tractoverse CI to confirm green.
