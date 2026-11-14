@@ -91,6 +91,13 @@ pausing before each `master`→`main` rename for approval):
 - [ ] riot: use_logo (**authored `inst/brand/logos/riot.png`**; currently uses a
       non-authored logo), README.qmd + build_readme, pkgdown brand (`#3ec4b2`)
       — then **pause before `master`→`main` rename + protection**.
+      **STATUS (Nov 14):** brand work committed on `fix/brand` (8fb78bb) and
+      **PR #14** opened (`fix/brand` → `master`): authored logo via use_logo,
+      README.qmd rebuilt, dark tractoverse pkgdown brand (`#3ec4b2` accent,
+      darkly + arrow-dark + bootstrap-icons), favicons regenerated from the
+      authored logo, pkgdown added to Suggests. Validated: SCSS compiles, YAML
+      parses, local pkgdown build applies the accent. **Paused before
+      `master`→`main` rename + protection — resume after PR #14 merges.**
 - [ ] toad (already on `main`): use_logo (**authored
       `inst/brand/logos/toad.png`**; currently uses a non-authored logo),
       README.qmd + build_readme, pkgdown brand (`#ffcf1b`).
