@@ -64,8 +64,11 @@ pausing before each `master`→`main` rename for approval):
       protection*).
 - [x] master (already on `main`): pkgdown dark brand + README (committed
       49d5b10); **logo corrected** to authored `inst/brand/logos/master.png` +
-      favicons regenerated (committed 10d1ca2). Protection per toad model
-      still to apply.
+      favicons regenerated (committed 10d1ca2). **Protection applied to `main`**
+      matching master's CI (pkgdown.yaml only, no R-CMD-check/test-coverage):
+      1 approving review + required `pkgdown` status check (strict), force-push
+      block, enforce-admins off — NOT the full toad 6-check model, since master
+      does not run those checks.
 - [ ] rtists: use_logo (**authored `inst/brand/logos/rtists.png`**), README.qmd +
       build_readme, pkgdown brand (`#a980fc`) — then **pause
       before `master`→`main` rename + protection**.
@@ -115,8 +118,9 @@ global licensing rule).
 - **Decision: keep free per-repo protection, modeled on toad.** Apply the same
   policy to each remaining package as it completes its `master`→`main` rename
   (rtists, riot, bot). `tractoverse`, `master`, `toad`, `fiber` are already on
-  `main`; toad and fiber are already protected (master's `main` protection still
-  to apply).
+  `main`; toad and fiber are protected per the toad model, and master is
+  protected matching its pkgdown-only CI (see the master item above for the
+  deviation).
 - **The toad model** (the template for every repo's default branch):
   - Required PR reviews: **1** approving review (dismiss-stale off, codeowner
     off, last-push-approval off).
