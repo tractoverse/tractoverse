@@ -82,9 +82,12 @@ pausing before each `master`→`main` rename for approval):
       toad-model protection** to `main` (1 review + all 6 checks incl. devel,
       strict, force-push block, enforce-admins off). **CAVEAT: deleting remote
       `master` auto-CLOSED (did not merge) open PRs #1 (`threejs-binary-backend`)
-      and #2 (`fix/brand-docs`); both are closed-not-merged with their work
-      preserved on the branches — neither is on `main` yet and must be
-      reopened/merged as PRs against `main`.**
+      and #2 (`fix/brand-docs`); both were closed-not-merged with work preserved
+      on the branches. Recovered by opening replacement PRs against `main`:
+      **PR #3** = `fix/brand-docs` (brand work, corrected articles note) and
+      **PR #4** = `threejs-binary-backend` (three.js backend, full original
+      body restored) — both OPEN, unmerged. Old #1/#2 stay closed (history
+      kept). `rtists-api` can only be added to `_pkgdown.yml` after #4 merges.**
 - [ ] riot: use_logo (**authored `inst/brand/logos/riot.png`**; currently uses a
       non-authored logo), README.qmd + build_readme, pkgdown brand (`#3ec4b2`)
       — then **pause before `master`→`main` rename + protection**.
