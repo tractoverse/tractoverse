@@ -57,8 +57,11 @@ pausing before each `master`→`main` rename for approval):
 - [x] fiber: pkgdown dark brand (committed 5599b11 on
       `fix/bundle-set-methods-and-attributes`); **logo corrected** to authored
       `inst/brand/logos/fiber.png` + favicons regenerated + dropped obsolete
-      `data-raw/logo-fiber.R` (committed f3da830). **Rename + protection still
-      DEFERRED** per user choice.
+      `data-raw/logo-fiber.R` (committed f3da830). **Renamed `master`→`main`**
+      (default branch now `main`; remote `master` deleted; local `main` tracks
+      `origin/main`; CI triggers already list `main`) and applied the **toad-model
+      protection** to `main` — fiber is protected per toad model (see *Branch
+      protection*).
 - [x] master (already on `main`): pkgdown dark brand + README (committed
       49d5b10); **logo corrected** to authored `inst/brand/logos/master.png` +
       favicons regenerated (committed 10d1ca2). Protection per toad model
@@ -111,8 +114,9 @@ global licensing rule).
   is the correct location, but the UI blocks enforcement without the upgrade.
 - **Decision: keep free per-repo protection, modeled on toad.** Apply the same
   policy to each remaining package as it completes its `master`→`main` rename
-  (fiber, rtists, riot, bot). `tractoverse`, `master`, `toad` are already on
-  `main`; toad is already protected.
+  (rtists, riot, bot). `tractoverse`, `master`, `toad`, `fiber` are already on
+  `main`; toad and fiber are already protected (master's `main` protection still
+  to apply).
 - **The toad model** (the template for every repo's default branch):
   - Required PR reviews: **1** approving review (dismiss-stale off, codeowner
     off, last-push-approval off).
