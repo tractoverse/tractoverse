@@ -11,12 +11,13 @@ diffusion MRI tractography data, inspired by the tidyverse. Installing this
 meta-package installs and attaches the whole family:
 }
 \details{
-- [fiber]: S7 data structures (`streamline`, `bundle`, `bundle_set`)
-- [master]: simulation of bundles and microstructural attributes
-- [rtists]: interactive 3D visualization of tractography
-- [riot]: input/output for tractography formats
-- [mascot]: curated reference datasets
-- [bot]: bundle optimal transport
+- [fiber]: data structures for tractography data
+- [master]: simulation of streamlines / bundles / bundle sets with
+  microstructural parameters
+- [rtists]: visualization
+- [riot]: data I/O (through rvtk)
+- [toad]: Tractography Open Atlases Data (companion dataset package)
+- [bot]: bundle optimal transport; statistical methods for tractography data
 
 The package also ships the shared tractoverse brand as the single source of
 truth: colors, theme and logo family, reused by the individual package
@@ -27,6 +28,7 @@ Useful links:
 \itemize{
   \item \url{https://tractoverse.github.io/}
   \item \url{https://github.com/tractoverse/tractoverse}
+  \item \url{https://tractoverse.github.io/tractoverse/}
   \item Report bugs at \url{https://github.com/tractoverse/tractoverse/issues}
 }
 

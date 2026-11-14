@@ -1,6 +1,5 @@
-# compose_logo6.R - light-bg compositor for the full 6-package logo family.
+# compose-logo.R - light-bg compositor for the full 6-package logo family.
 #
-# Key differences from compose_logo5 / the inline v14-v17 builders:
 #  * The tract is centered HORIZONTALLY by its CONTENT centre-of-mass (not by its
 #    bounding box). The rendered two-tract scene has a mild left/right mass
 #    imbalance (the anatomy halves differ), so bbox-centering leaves the glyph
@@ -8,10 +7,9 @@
 #    lands on the hex centre col W/2 fixes the perceived horizontal off-centering
 #    deterministically for every package.
 #  * Vertical placement fills the pointy-top hexagon symmetrically (apexes near
-#    top/bottom) matching the approved v15 layout.
+#    top/bottom).
 #  * The emblem is a FontAwesome icon (per-package) chroma-keyed from rsvg into an
-#    alpha mask and tinted with the package colour -- replacing the rejected
-#    hand-drawn polygon emblem.
+#    alpha mask and tinted with the package colour.
 #  * Every per-package element (tract, name, icon) is parameterized by the package
 #    palette colour.
 
@@ -190,12 +188,12 @@ ic_place <- function(
 }
 
 # ----- compositor -----
-compose_logo6 <- function(
+compose_logo <- function(
   render_path,
   pal,
   name,
   R = 300,
-  bg_color = "#eaf4fc", # light blue (was #ffffff) -- matches logo-fiber-v15
+  bg_color = "#eaf4fc", # chosen light-blue background
   border_color = "#111111",
   border_w = 14,
   vigain = 1.8,
@@ -246,8 +244,8 @@ compose_logo6 <- function(
   # lands on the hex centre. content_cm_x() is in render px; after scaling by sc
   # (crop->final) this is the shift in final px.
   dcm <- content_cm_x(occ) * sc # render-px CM offset -> final px
-  # replicate v15's vertical: bottom-aligned was oy=round(H-th); for a full-hex
-  # cone the bbox already spans the cone, so also apply vy_frac anchoring here.
+  # vertical: for a full-hex cone the bbox already spans the cone, so anchor via
+  # vy_frac here.
   oy <- round(vy_frac * H - th / 2)
   # horizontal: center content CM at W/2  => place bbox so CM at W/2.
   # CM_final = ox + (CM_render_final - bbox_center_final) = ox + dcm

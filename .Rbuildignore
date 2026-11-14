@@ -1,0 +1,13 @@
+^data-raw$
+^DECISIONS\.md$
+^AGENTS\.md$
+^\.gitignore$
+^_pkgdown\.yml$
+^docs$
+^pkgdown$
+^\.github$
+^codecov\.yml$
+^[.]?air[.]toml$
+^\.vscode$
+^README\.qmd$
+^cran-comments\.md$

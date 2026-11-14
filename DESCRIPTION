@@ -11,17 +11,17 @@ Authors@R: c(
     ))
 Description: A curated collection of R packages for the analysis of diffusion
     MRI tractography data, inspired by the 'tidyverse'. This meta-package
-    installs and attaches the tractoverse family: 'fiber' (S7 data structures),
-    'master' (simulation of bundles and microstructural attributes), 'rtists'
-    (interactive 3D visualization), 'riot' (input/output), 'mascot' (reference
-    datasets) and 'bot' (bundle optimal transport). It also ships the shared
-    tractoverse brand (colors, theme, logos) as the single source of truth
-    reused by the individual package websites and applications.
+    installs and attaches the tractoverse family: 'fiber' (data structures),
+    'master' (simulation of streamlines and microstructural attributes),
+    'rtists' (interactive 3D visualization), 'riot' (input/output), 'toad'
+    (Tractography Open Atlases Data, reference datasets) and 'bot' (bundle
+    optimal transport). It also ships the shared tractoverse brand (colors,
+    theme, logos) as the single source of truth reused by the individual
+    package websites and applications.
 License: MIT + file LICENSE
 Encoding: UTF-8
 LazyData: true
-URL: https://tractoverse.github.io/,
-    https://github.com/tractoverse/tractoverse
+URL: https://tractoverse.github.io/, https://github.com/tractoverse/tractoverse, https://tractoverse.github.io/tractoverse/
 BugReports: https://github.com/tractoverse/tractoverse/issues
 Depends:
     R (>= 4.1.0)
@@ -30,18 +30,19 @@ Imports:
     master,
     rtists,
     riot,
-    mascot,
+    toad,
     bot
 Suggests:
     knitr,
     rmarkdown,
-    pkgdown
+    pkgdown,
+    remotes
 Remotes:
     tractoverse/fiber,
     tractoverse/master,
     tractoverse/rtists,
     tractoverse/riot,
-    tractoverse/mascot,
+    tractoverse/toad,
     tractoverse/bot
 Config/Needs/website: pkgdown, rmarkdown
 Config/roxygen2/version: 8.1.1

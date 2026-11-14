@@ -30,7 +30,7 @@ $pkg-fiber:  #59aaea;
 $pkg-master: #ff9441;
 $pkg-rtists: #a980fc;
 $pkg-riot:   #3ec4b2;
-$pkg-mascot: #ffcf1b;
+$pkg-toad: #ffcf1b;
 $pkg-bot:    #3fb950;
 
 /* --- shell ----------------------------------------------------------------- */
@@ -80,7 +80,7 @@ code, pre, .monospace { font-family: 'JetBrains Mono', monospace; }
 .pkg-master  { border-color: $pkg-master;  color: $pkg-master; }
 .pkg-rtists  { border-color: $pkg-rtists;  color: $pkg-rtists; }
 .pkg-riot    { border-color: $pkg-riot;    color: $pkg-riot; }
-.pkg-mascot  { border-color: $pkg-mascot;  color: $pkg-mascot; }
+.pkg-toad    { border-color: $pkg-toad;    color: $pkg-toad; }
 .pkg-bot     { border-color: $pkg-bot;     color: $pkg-bot; }
 .pkg.cran    { border-color: $tv-green; color: $tv-green; }
 .pkg.pend    { border-color: $tv-purple; color: $tv-purple; }

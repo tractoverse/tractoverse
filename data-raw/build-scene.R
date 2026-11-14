@@ -6,7 +6,7 @@ PALETTE <- c(
   master = "#ff9441",
   rtists = "#a980fc",
   riot = "#3ec4b2",
-  mascot = "#ffcf1b",
+  toad = "#ffcf1b",
   bot = "#3fb950"
 )
 
@@ -121,6 +121,19 @@ splay_bundle <- function(x, ang) {
 #' spread left/right instead of converging to a central column, giving the shared
 #' "symmetrical pyramidal tract that fans left and right" glyph. `splay = 0` is
 #' the raw anatomy (butterfly cone). `nL`/`nR` override sample counts.
+#'
+#' `mirror_x_side` builds the chosen symmetric cone: instead of merging the two
+#' (unequal) anatomy halves, it constructs an EXACTLY left/right symmetric
+#' butterfly from a
+#' SINGLE hemisphere (`"L"` = `cl` crown-sample as the left wing, `"R"` = `cr`
+#' as the right wing), with the opposite wing being the reflection of the base
+#' across the X = 0 axis. This removes the constant LR mass imbalance of the raw
+#' anatomical render. `mirror_x_side` requires `crown_idx`.
+#'
+#' With `patch = TRUE` (default) the widget is patched in place: the camera is
+#' re-aimed (look along +Y so X -> screen-horizontal, Z -> screen-vertical,
+#' crown-up) and the three.js AxesHelper gizmo is removed. `cam_dist = 1.9` is
+#' the chosen camera distance.
 make_scene <- function(
   pkg = "fiber",
   dir,
@@ -136,22 +149,41 @@ make_scene <- function(
   nL = NULL,
   nR = NULL,
   mirror_r = FALSE,
-  crown_idx = NULL
+  crown_idx = NULL,
+  mirror_x_side = NULL, # "L" or "R": build exact-symmetric butterfly from one hemisphere
+  cam_view = c(0, 1, 0),
+  cam_up = c(0, 0, 1),
+  cam_dist = 1.9,
+  patch = TRUE
 ) {
   mode <- match.arg(mode)
-  iL <- if (!is.null(nL)) sort(sample.int(5577, nL)) else .IDX_L
-  iR <- if (!is.null(nR)) sort(sample.int(2397, nR)) else .IDX_R
-  if (!is.null(crown_idx)) {
-    # crown-stratified indices (list(iL=, iR=)), the agreed 30/side crown sampling
+  if (!is.null(mirror_x_side)) {
+    # single-hemisphere exact-symmetric butterfly
+    if (is.null(crown_idx)) {
+      stop("mirror_x_side requires crown_idx (list(iL=, iR=) of crown samples)")
+    }
+    if (!mirror_x_side %in% c("L", "R")) {
+      stop("mirror_x_side must be 'L' or 'R'")
+    }
     idx <- readRDS(crown_idx)
-    iL <- idx$iL
-    iR <- idx$iR
-  }
-  bL <- cl[iL]
-  bR <- cr[iR]
-  # mirror CST_R's depth (Y) so it mirrors CST_L's 3-D curvature (symmetric cone)
-  if (isTRUE(mirror_r)) {
-    bR <- mirror_depth(bR)
+    base <- if (mirror_x_side == "L") cl[idx$iL] else cr[idx$iR]
+    bL <- base
+    bR <- mirror_x(base, axis = 0)
+  } else {
+    iL <- if (!is.null(nL)) sort(sample.int(5577, nL)) else .IDX_L
+    iR <- if (!is.null(nR)) sort(sample.int(2397, nR)) else .IDX_R
+    if (!is.null(crown_idx)) {
+      # crown-stratified indices (list(iL=, iR=)), the agreed 30/side crown sampling
+      idx <- readRDS(crown_idx)
+      iL <- idx$iL
+      iR <- idx$iR
+    }
+    bL <- cl[iL]
+    bR <- cr[iR]
+    # mirror CST_R's depth (Y) so it mirrors CST_L's 3-D curvature (symmetric cone)
+    if (isTRUE(mirror_r)) {
+      bR <- mirror_depth(bR)
+    }
   }
   if (!isTRUE(all.equal(splay, 0))) {
     bL <- splay_bundle(bL, splay)
@@ -189,6 +221,10 @@ make_scene <- function(
     selfcontained = FALSE,
     libdir = "index_files"
   )
+  if (patch) {
+    patch_camera(dir, view = cam_view, up = cam_up, dist = cam_dist)
+    patch_axes(dir)
+  }
   invisible(w)
 }
 

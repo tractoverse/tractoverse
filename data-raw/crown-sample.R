@@ -1,6 +1,5 @@
-# crown_sample.R - re-implementation of the "densest-top" crown-stratified
-# downsampling (persisted this time; the v18-test-era algorithm was interactive
-# only and lost). Goal (per tractoverse AGENTS.md): select `n` streamlines per
+# crown-sample.R - the "densest-top" crown-stratified downsampling.
+# Goal (per tractoverse AGENTS.md): select `n` streamlines per
 # side, with the downsampling concentrated in the densest areas at the top
 # ("the crown" = uppermost part of each bundle), so the sparse fan stays even
 # near the apex.
@@ -16,12 +15,11 @@
 #  * Selection: DETERMINISTIC EVEN SPACING along the crown fan order
 #    (one per ~ns/n rank step), giving even, full-width fan coverage that is
 #    "even near the apex" while keeping all picks inside the dense crown.
-#    This reproduces the approved render's span (measured):
+#    Measured span of the selection:
 #      crown-X span ~ [-48.8, -11.1], peak-Z span ~ [50.4, 77.1] (left bundle).
 #
-# Intentionally simple and fully reproducible; the exact interactive index set
-# from the lost session is not a target - visual parity is what counts
-# (validated by measurable pixel properties + user review).
+# Intentionally simple and fully reproducible; the selection is validated by
+# measurable pixel properties + user review.
 
 # bundle: a fiber::bundle. n: target count. z_frac: top slab fraction of the Z
 # range treated as "crown". Returns the integer indices (into bundle@streamlines)
@@ -58,8 +56,8 @@ crown_sample <- function(bundle, n = 30, z_frac = 0.25) {
   as.integer(names(fanpos)[sel])
 }
 
-# Write a crown_strat-style index set (list(iL=, iR=)) with .X-named element
-# names matching the old crown_strat_NN.rds convention, and save to RDS.
+# Write a crown_strat index set (list(iL=, iR=)) with .X-suffixed element
+# names and save to RDS.
 make_crown_strat <- function(path_out, n = 30, z_frac = 0.25) {
   iL <- crown_sample(cl, n, z_frac)
   iR <- crown_sample(cr, n, z_frac)
