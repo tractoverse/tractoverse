@@ -75,8 +75,16 @@ pausing before each `master`→`main` rename for approval):
       already referenced the logo path (README.md now resolves it); no further
       build_readme needed. NOTE: `_pkgdown.yml` articles currently list only
       `rtists` — `rtists-api` must be readded once the `threejs-binary-backend`
-      PR (#1, which introduces that vignette) merges. **PAUSED: awaiting approval
-      for `master`→`main` rename + protection**.
+      PR (#1, which introduces that vignette) is merged/reopened. **Renamed
+      `master`→`main`** (default branch now `main`; remote `master` deleted;
+      local `main` created from `origin/master`, now tracks `origin/main`, stale
+      local `master` deleted; `origin/HEAD`→`main`) and applied the **full
+      toad-model protection** to `main` (1 review + all 6 checks incl. devel,
+      strict, force-push block, enforce-admins off). **CAVEAT: deleting remote
+      `master` auto-CLOSED (did not merge) open PRs #1 (`threejs-binary-backend`)
+      and #2 (`fix/brand-docs`); both are closed-not-merged with their work
+      preserved on the branches — neither is on `main` yet and must be
+      reopened/merged as PRs against `main`.**
 - [ ] riot: use_logo (**authored `inst/brand/logos/riot.png`**; currently uses a
       non-authored logo), README.qmd + build_readme, pkgdown brand (`#3ec4b2`)
       — then **pause before `master`→`main` rename + protection**.
