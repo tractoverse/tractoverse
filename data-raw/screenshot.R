@@ -21,9 +21,9 @@
 
 args <- commandArgs(trailingOnly = TRUE)
 path <- args[1]
-out  <- args[2]
+out <- args[2]
 port <- if (length(args) > 2L) args[3] else "8399"
-url  <- sprintf("http://127.0.0.1:%s/%s/index.html", port, path)
+url <- sprintf("http://127.0.0.1:%s/%s/index.html", port, path)
 
 suppressMessages(library(chromote))
 
@@ -51,8 +51,10 @@ s <- chrome$new_session(width = 1200, height = 1200, wait_ = TRUE)
 invisible(s$Page$navigate(url, wait_ = TRUE))
 
 s$Emulation$setDeviceMetricsOverride(
-  width = 1200, height = 1200,
-  deviceScaleFactor = 2, mobile = FALSE,
+  width = 1200,
+  height = 1200,
+  deviceScaleFactor = 2,
+  mobile = FALSE,
   wait_ = TRUE
 )
 
@@ -62,10 +64,13 @@ wait_for_canvas <- function(session, timeout = 10000) {
   while (Sys.time() < deadline) {
     res <- session$Runtime$evaluate(
       "document.querySelector('canvas') ? {has:true, box:(function(r){return {x:r.x,y:r.y,width:r.width,height:r.height}})(document.querySelector('canvas').getBoundingClientRect())} : {has:false}",
-      returnByValue = TRUE, wait_ = TRUE
+      returnByValue = TRUE,
+      wait_ = TRUE
     )
     has <- isTRUE(res$result$value$has)
-    if (has) return(res$result$value$box)
+    if (has) {
+      return(res$result$value$box)
+    }
     Sys.sleep(0.1)
   }
   NULL
@@ -75,8 +80,13 @@ if (is.null(clip)) {
   message("no canvas found in 10s")
   quit(status = 1)
 }
-message(sprintf("canvas clip: x=%.0f y=%.0f w=%.0f h=%.0f",
-                clip$x, clip$y, clip$width, clip$height))
+message(sprintf(
+  "canvas clip: x=%.0f y=%.0f w=%.0f h=%.0f",
+  clip$x,
+  clip$y,
+  clip$width,
+  clip$height
+))
 
 Sys.sleep(2.5)
 
@@ -85,8 +95,8 @@ Sys.sleep(2.5)
 invisible(s$screenshot(
   filename = out,
   selector = "canvas",
-  scale    = 2,
-  show     = FALSE,
-  wait_    = TRUE
+  scale = 2,
+  show = FALSE,
+  wait_ = TRUE
 ))
 message(sprintf("screenshot.R: wrote %s", out))

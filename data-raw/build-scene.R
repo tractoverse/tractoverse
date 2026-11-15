@@ -122,8 +122,9 @@ splay_bundle <- function(x, ang) {
 #' "symmetrical pyramidal tract that fans left and right" glyph. `splay = 0` is
 #' the raw anatomy (butterfly cone). `nL`/`nR` override sample counts.
 #'
-#' `mirror_x_side` is the APPROVED v24 mode: instead of merging the two (unequal)
-#' anatomy halves, it builds an EXACTLY left/right symmetric butterfly from a
+#' `mirror_x_side` builds the chosen symmetric cone: instead of merging the two
+#' (unequal) anatomy halves, it constructs an EXACTLY left/right symmetric
+#' butterfly from a
 #' SINGLE hemisphere (`"L"` = `cl` crown-sample as the left wing, `"R"` = `cr`
 #' as the right wing), with the opposite wing being the reflection of the base
 #' across the X = 0 axis. This removes the constant LR mass imbalance of the raw
@@ -132,7 +133,7 @@ splay_bundle <- function(x, ang) {
 #' With `patch = TRUE` (default) the widget is patched in place: the camera is
 #' re-aimed (look along +Y so X -> screen-horizontal, Z -> screen-vertical,
 #' crown-up) and the three.js AxesHelper gizmo is removed. `cam_dist = 1.9` is
-#' the approved v24 camera distance.
+#' the chosen camera distance.
 make_scene <- function(
   pkg = "fiber",
   dir,
@@ -157,11 +158,13 @@ make_scene <- function(
 ) {
   mode <- match.arg(mode)
   if (!is.null(mirror_x_side)) {
-    # approved v24: single-hemisphere exact-symmetric butterfly
+    # single-hemisphere exact-symmetric butterfly
     if (is.null(crown_idx)) {
       stop("mirror_x_side requires crown_idx (list(iL=, iR=) of crown samples)")
     }
-    if (!mirror_x_side %in% c("L", "R")) stop("mirror_x_side must be 'L' or 'R'")
+    if (!mirror_x_side %in% c("L", "R")) {
+      stop("mirror_x_side must be 'L' or 'R'")
+    }
     idx <- readRDS(crown_idx)
     base <- if (mirror_x_side == "L") cl[idx$iL] else cr[idx$iR]
     bL <- base

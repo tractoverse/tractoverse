@@ -19,20 +19,21 @@
 #' @keywords internal
 "_PACKAGE"
 
-# Attach the core family when the meta-package is loaded, tidyverse-style.
-# The core packages stay listed in `Imports:` (so they are present and correct
-# for `R CMD check` / CRAN), and this hook attaches them to the search path so
-# `library(tractoverse)` brings the whole family into scope. Each attachment is
-# guarded so an unavailable package cannot prevent loading the meta-package.
-.onAttach <- function(libname, pkgname) {
-  core <- names(tractoverse_packages())
-  for (pkg in core) {
-    tryCatch(
-      suppressPackageStartupMessages(
-        library(pkg, character.only = TRUE)
-      ),
-      error = function(e) NULL
-    )
-  }
-  invisible()
+# Suppress R CMD check note
+# Namespace in Imports field not imported from: PKG
+#   All declared Imports should be used.
+#
+# The core packages are kept in `Imports:` (not `Depends:`) so they are
+# guaranteed present and correct for `R CMD check` / CRAN, and are attached on
+# load by `.onAttach()` (see R/zzz.R and R/attach.R). Because they are never
+# called with `::` in the normal code path, R CMD check would otherwise report
+# them as unused imports; referencing one symbol from each (as tidyverse does)
+# satisfies the check.
+ignore_unused_imports <- function() {
+  fiber::streamline
+  master::create_axons
+  rtists::plot3d
+  riot::read_bundle
+  toad::HCP1065_TR_P_R
+  bot::optimal_transport
 }

@@ -28,12 +28,12 @@
 #' @importFrom stats setNames
 #' @export
 install_core_packages <- function(
-    packages  = names(tractoverse_packages()),
-    force     = FALSE,
-    branch    = "main",
-    repos     = getOption("repos"),
-    ...) {
-
+  packages = names(tractoverse_packages()),
+  force = FALSE,
+  branch = "main",
+  repos = getOption("repos"),
+  ...
+) {
   pkgs <- unique(packages)
   ok <- pkgs %in% names(tractoverse_packages())
   if (!all(ok)) {
@@ -54,7 +54,11 @@ install_core_packages <- function(
       utils::install.packages(pkg, repos = repos, ...)
       outcome[[pkg]] <- "cran"
     } else {
-      msg <- sprintf("tractoverse/%s@%s not on CRAN; installing from GitHub main", pkg, branch)
+      msg <- sprintf(
+        "tractoverse/%s@%s not on CRAN; installing from GitHub main",
+        pkg,
+        branch
+      )
       message("  ", msg)
       remotes::install_github(
         sprintf("tractoverse/%s", pkg),
@@ -70,8 +74,7 @@ install_core_packages <- function(
 # Determine which requested packages exist on the configured CRAN repositories.
 .on_cran <- function(pkgs, repos) {
   # Resolve the @CRAN@ placeholder and empty config to a real mirror.
-  if (is.null(repos) || length(repos) == 0L ||
-      any(grepl("^@CRAN@$", repos))) {
+  if (is.null(repos) || length(repos) == 0L || any(grepl("^@CRAN@$", repos))) {
     repos <- c(CRAN = "https://cloud.r-project.org")
   }
   ap <- tryCatch(
@@ -79,7 +82,9 @@ install_core_packages <- function(
     error = function(e) NULL
   )
   if (is.null(ap)) {
-    warning("Could not query CRAN availability; assuming all packages come from GitHub")
+    warning(
+      "Could not query CRAN availability; assuming all packages come from GitHub"
+    )
     return(character(0))
   }
   intersect(pkgs, rownames(ap))

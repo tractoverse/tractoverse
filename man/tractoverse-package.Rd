@@ -28,6 +28,7 @@ Useful links:
 \itemize{
   \item \url{https://tractoverse.github.io/}
   \item \url{https://github.com/tractoverse/tractoverse}
+  \item \url{https://tractoverse.github.io/tractoverse/}
   \item Report bugs at \url{https://github.com/tractoverse/tractoverse/issues}
 }
 

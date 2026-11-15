@@ -17,7 +17,7 @@ Meta-package build-out (in progress). Status: `[ ]` = open, `[x]` = done,
       (git-versioned, Rbuildignore'd). **(this file)**
 - [x] Replace the Python `screenshot.py` with an R script using webshot2
       (now `screenshot.R`, driven by chromote, the webshot2 browser lib).
-- [ ] Rename `{mascot}` to `{toad}` (Tractography Open Atlases Data).
+- [~] Rename `{mascot}` to `{toad}` (Tractography Open Atlases Data).
       Meta-package + logo done; mascot repo local package rename + disk
       folder mascot/ -> toad/ done (committed 841efdb); **GitHub repo
       rename tractoverse/mascot -> tractoverse/toad still pending** (after it,
@@ -27,7 +27,14 @@ Meta-package build-out (in progress). Status: `[ ]` = open, `[x]` = done,
       of repo -> add `install_core_packages()` (committed b41c15d). Note: bot's
       default branch is `master` (only family member not on `main`), so a
       `branch="main"` default fails for bot; install via `ref="master"`.
-- [ ] Confirm MIT licensing is appropriate for the pieces involved.
+- [x] Confirm MIT licensing is appropriate for the pieces involved. MIT is
+      appropriate (see *MIT licensing decision* below). tractoverse ships only
+      in-house artwork (logos/theme/palette from the user's own useR! 2026
+      talk) plus Font Awesome Free icon glyphs embedded in the logos (CC BY 4.0
+      with attribution recorded in inst/brand/NOTICE). No third-party
+      JS/CSS/fonts are bundled: three.js stays in rtists (MIT, not
+      redistributed here), and Inter/JetBrains Mono are loaded at runtime from
+      Google Fonts (SIL OFL 1.1), not vendored.
 - [x] Roxygenize/document (bot + master installable), add README +
       `_pkgdown.yml` + brand. `.onAttach()` hook attaches the 6 core packages
       (tidyverse-style). R CMD check: 0 WARNING, 2 deliberate NOTEs (Imports
@@ -35,7 +42,189 @@ Meta-package build-out (in progress). Status: `[ ]` = open, `[x]` = done,
       builds cleanly with the dark brand (see *pkgdown dark theme* note below).
 - [x] Update package roles across AGENTS.md / other files to the agreed role text.
 
+**Item 7 — 6-package docs/brand + protection campaign** (one package at a time,
+pausing before each `master`→`main` rename for approval):
+- [x] Fix CI macOS link error (drop `-Wl,-all_load` on static VTK link) — rvtk
+      PR #6 (`fix/macos-all-load`, base `main`).
+- [x] Fix CI `bot::optimal_transport` missing-export WARNING — bot PR #1
+      (`placeholder/optimal-transport`, base `master`).
+- [x] Add mermaid dependency diagram to tractoverse README.qmd + build_readme
+      (committed 0824643, pushed to `step6-docs-brand`).
+- [x] Decide branch protection: **per-repo, as in toad** (org rulesets blocked
+      on free plan) — see *Branch protection* decision below.
+- [~] tractoverse: push `cb7c4aa..0824643` to origin/step6-docs-brand (PR #1) —
+      **middle commits pushed; final commit pushed; verify PR page**.
+- [x] fiber: pkgdown dark brand (committed 5599b11 on
+      `fix/bundle-set-methods-and-attributes`); **logo corrected** to authored
+      `inst/brand/logos/fiber.png` + favicons regenerated + dropped obsolete
+      `data-raw/logo-fiber.R` (committed f3da830). **Renamed `master`→`main`**
+      (default branch now `main`; remote `master` deleted; local `main` tracks
+      `origin/main`; CI triggers already list `main`) and applied the **toad-model
+      protection** to `main` — fiber is protected per toad model (see *Branch
+      protection*).
+- [x] master (already on `main`): pkgdown dark brand + README (committed
+      49d5b10); **logo corrected** to authored `inst/brand/logos/master.png` +
+      favicons regenerated (committed 10d1ca2). **Protection applied to `main`**
+      matching master's CI (pkgdown.yaml only, no R-CMD-check/test-coverage):
+      1 approving review + required `pkgdown` status check (strict), force-push
+      block, enforce-admins off — NOT the full toad 6-check model, since master
+      does not run those checks.
+- [x] rtists: pkgdown brand (`#a980fc`; dark darkly + arrow-dark theme,
+      extra.scss tokens, authored logo at `man/figures/logo.png`, favicons,
+      pkgdown in Suggests) committed on `fix/brand-docs` (PR #2). README.qmd
+      already referenced the logo path (README.md now resolves it); no further
+      build_readme needed. NOTE: `_pkgdown.yml` articles currently list only
+      `rtists` — `rtists-api` must be readded once the `threejs-binary-backend`
+      PR (#1, which introduces that vignette) is merged/reopened. **Renamed
+      `master`→`main`** (default branch now `main`; remote `master` deleted;
+      local `main` created from `origin/master`, now tracks `origin/main`, stale
+      local `master` deleted; `origin/HEAD`→`main`) and applied the **full
+      toad-model protection** to `main` (1 review + all 6 checks incl. devel,
+      strict, force-push block, enforce-admins off). **CAVEAT: deleting remote
+      `master` auto-CLOSED (did not merge) open PRs #1 (`threejs-binary-backend`)
+      and #2 (`fix/brand-docs`); both were closed-not-merged with work preserved
+      on the branches. Recovered by opening replacement PRs against `main`:
+      **PR #3** = `fix/brand-docs` (brand work, corrected articles note) and
+      **PR #4** = `threejs-binary-backend` (three.js backend, full original
+      body restored) — both OPEN, unmerged. Old #1/#2 stay closed (history
+      kept). `rtists-api` can only be added to `_pkgdown.yml` after #4 merges.**
+- [x] riot: use_logo (**authored `inst/brand/logos/riot.png`**), README.qmd +
+      build_readme, pkgdown brand (`#3ec4b2`), then `master`→`main` rename +
+      protection. **COMPLETE (Nov 15).** Brand (PR #14) + a functional fix
+      (PR #15) both merged onto `master`, then renamed `master`→`main` and
+      protected. Sequence & caveats:
+      - PR #14 (docs/brand only) initially FAILED all R-CMD-check jobs: a real
+        pre-existing bug in `bundle_to_flat_list()` (R/bundle.R) read the
+        per-streamline `@streamline_data` slots, which fiber's modern API hoists
+        to the bundle level — so the bundle→flat-list round-trip silently dropped
+        `streamline_data` columns. Riot's test_bundle.R lines 62-63/86 asserted
+        the stale per-streamline semantics.
+      - **Shipped the fix as a SEPARATE PR** (`fix/bundle-flatlist2` → master,
+        **PR #15**), keeping concerns clean vs. the docs-only brand PR #14. Fix:
+        `bundle_to_flat_list()` now reads bundle-level `x@streamline_data`
+        (broadcasting `[[i]]` over `n_pts`) plus any not-lifted per-streamline
+        keys via `setdiff`; test lines 62-63 switched to the public `[[` accessor.
+        Full riot tinytest suite passes locally (111/111) and all CI checks green.
+      - **Rebase-without-force-push:** after #15 merged, PR #14's branch still had
+        the old base, so its re-run failed on the stale test. Couldn't force-push
+        (policy). Fixed by **merging `origin/master` into `fix/brand`** (forward
+        merge, non-force push) → branch inherits the fix, diff vs master stays
+        docs-only, CI turns green, merge state CLEAN. (Retargeting a PR's head via
+        `gh api` PATCH is NOT supported by GitHub; the merge approach is the way.)
+      - Rename + protection applied to `main` (default_branch PATCH → `main`,
+        origin/HEAD → `main`, remote & local `master` deleted, local `main`
+        tracks `origin/main`), full toad-model protection (1 review, strict,
+        force-push/deletion blocked, enforce-admins off). **DEVIATION from toad**
+        (decided with user, stricter): riot's `main` requires **8** status checks
+        (riot's full matrix incl. `ubuntu-latest (release) - without preinstalled
+        VTK` and `pkgdown`), not the base 6.
+- [x] toad (already on `main`): use_logo (**authored
+      `inst/brand/logos/toad.png`**; currently uses a non-authored logo),
+      README.qmd + build_readme, pkgdown brand (`#ffcf1b`). **DONE (Nov 15):**
+      brand work on `fix/brand` → **PR #15 MERGED** (merge commit `2a76771`,
+      merge commit, not squash — matches riot). Docs-only: authored logo →
+      `man/figures/logo.png`, `pkgdown/extra.scss` `#ffcf1b` accent, dark brand
+      `_pkgdown.yml`, favicons regenerated, `pkgdown` to Suggests; README.md
+      verified in sync. All 8 CI checks passed. **Merge note — the 1-review rule
+      is NOT a solo blocker:** `enforce_admins` is `false` on every tractoverse
+      repo, so astamm (sole admin) bypasses the required-review check — that's
+      how riot's #14/#15 were also merged by the author. CLI: `gh pr merge 15
+      --merge --admin`. Web UI: admin sees the merge override. No protection
+      change was needed (toad matches the family: 1 review, strict, checks =
+      base 6).
+- [x] bot (on `master`, bare skeleton pkg): use_logo (**authored
+      `inst/brand/logos/bot.png`**), README.qmd + build_readme,
+      pkgdown brand (`#3fb950`), DESCRIPTION license cleanup) — brand done,
+      **PAUSE before `master`→`main` rename + protection**. **DONE (Nov 15):**
+      brand work on `fix/brand`, **PR #2 MERGED** into `master` (merge commit
+      `d39c0be`, standard merge). Docs-only: authored logo →
+      `man/figures/logo.png` (240x277, bot-green `#3FB950` family verified),
+      dark `_pkgdown.yml` + `pkgdown/extra.scss` (`#3fb950`) + favicons,
+      README.qmd/README.md (honest stub status; **no badges** — bot has NO
+      R-CMD-check/Codecov workflows, only pkgdown.yaml added), DESCRIPTION
+      cleaned (placeholder → real text, `MIT + file LICENSE` + LICENSE file,
+      `pkgdown` to Suggests), `.Rbuildignore` updated. **pkgdown check PASSED**
+      (2m47s); PR was CLEAN/MERGEABLE (bot `master` unprotected → no review or
+      `--admin` needed). Local `master` synced to `d39c0be`, `fix/brand`
+      deleted. Deferred to rename+protection phase: live GitHub Pages
+      deploy + the full CI matrix (R-CMD-check/test-coverage) bot still lacks.
+  **RENAME + PROTECTION DONE (Nov 15):** bot `master`→`main` (default set via
+  `gh repo edit --default-branch main`, origin/HEAD updated, old `master`
+  deleted). Copied toad's pure-R CI into bot (R-CMD-check.yaml +
+  test-coverage.yaml, checkout@v7 / check-r-package@v2 / codecov v7.1.1, plus
+  `workflow_dispatch` trigger `0eb80c8`), `.gitignore` `docs`, pkgdown.yaml
+  push → `[main]` (`91973b8`). **Blocker discovered:** bot `main` had an empty
+  `R/` dir (no source at all) → both required checks failed (test-coverage covr
+  `cannot open .../bot/R/bot`; R-CMD-check `no parsed files found` +
+  `unstated dependencies` example WARNING with `error_on=warning`). Protection
+  requires ≥1 real R source file. **Unlocked via PR #3** (`feat/optimal-
+  transport-placeholder`, base `main`): ported `R/zzz.R` +
+  `man/optimal_transport.Rd` (the `optimal_transport` stub from superseded PR
+  #1, kept for the meta-package's `ignore_unused_imports()` →
+  `bot::optimal_transport`), DESCRIPTION kept `RoxygenNote: 8.0.0` (removed
+  roxygen 8.1.1's auto-added `Config/roxygen2/version` — campaign precedent).
+  CI green (R-CMD-check 5/5 + test-coverage), merge commit `3bb27d9` (standard
+  merge, main still unprotected). **Then applied base-6 protection to `main`**
+  (toad template): 6 required status checks (5 R-CMD-check matrix +
+  `test-coverage`), strict=true, 1 required approving review, dismiss_stale
+  false, enforce_admins=false (solo bypass intact), force-push/deletion
+  blocked. Local feat branch deleted. Note: PR #1 (`placeholder/optimal-
+  transport`, base `master`) was closed-not-merged by the rename; its work is
+  superseded by PR #3. Stale remote `placeholder/optimal-transport` branch left
+  in place.
+- [ ] After rvtk #6 + bot #1 (now #3) merge, re-run tractoverse CI to confirm green.
+
 ## Decisions log
+
+### MIT licensing decision (Step 5, closed)
+
+The meta-package is `MIT + file LICENSE` (Copyright 2026 Aymeric Stamm). This is
+appropriate: the package redistributes ONLY in-house artwork (logos, theme SCSS,
+palette, all derived from the user's own useR! 2026 talk) plus Font Awesome Free
+icon glyphs rasterized into the logos, which is permitted under CC BY 4.0 with
+attribution (recorded in `inst/brand/NOTICE`, which also covers the three.js
+render-scene provenance even though three.js is NOT redistributed here). No
+third-party JS/CSS/fonts are bundled:
+- **three.js** stays in rtists (MIT) — tractoverse ships only the PNG renders.
+- **Inter / JetBrains Mono** are declared `source: google` and loaded at runtime
+  from Google Fonts (both SIL OFL 1.1) — not vendored, so no redistribution
+  concern. Switching to self-hosted copies later WOULD require OFL notice +
+  rename compliance, so prefer keeping Google-hosted if possible.
+- **pkgdown favicons** are rasterized from the in-house tractoverse logo by the
+  RealFaviconGenerator service (attribution metadata embedded in
+  `pkgdown/favicon/favicon.svg`); the output is the user's own artwork, so no
+  third-party copyrightable content is introduced.
+Re-check via `inst/brand/NOTICE` before shipping any new bundled asset (per the
+global licensing rule).
+
+### Branch protection (Item 7, decided)
+
+- **Org-level repository rulesets require a paid GitHub Team plan** (free orgs
+  only get classic per-repo branch protection). Org **Settings → Repository →
+  Rulesets** (https://github.com/organizations/<org>/settings/repository/rules)
+  is the correct location, but the UI blocks enforcement without the upgrade.
+- **Decision: keep free per-repo protection, modeled on toad.** Apply the same
+  policy to each remaining package as it completes its `master`→`main` rename
+  (rtists, riot, bot). `tractoverse`, `master`, `toad`, `fiber` are already on
+  `main`; toad and fiber are protected per the toad model, and master is
+  protected matching its pkgdown-only CI (see the master item above for the
+  deviation).
+- **The toad model** (the template for every repo's default branch):
+  - Required PR reviews: **1** approving review (dismiss-stale off, codeowner
+    off, last-push-approval off).
+  - Required status checks: `macos-latest (release)`, `windows-latest (release)`,
+    `ubuntu-latest (devel)`, `ubuntu-latest (release)`,
+    `ubuntu-latest (oldrel-1)`, `test-coverage` — with strict = true
+    (require branches up to date).
+  - Block force-pushes (non-fast-forward): on.
+  - Enforce for admins: **off** (matches toad — admin escape hatch).
+- **Revisit org-level rulesets if the org ever upgrades to Team** — a draft
+  spec lives in the scratch copy of `tractoverse-ruleset.md` (not git-versioned).
+- `mascot` → `toad` GitHub rename is still pending (see running task list); the
+  `midi` repo is legacy (merged into `master`) and intentionally left unprotected
+  unless it needs to be archived.
+
+---
 
 ### pkgdown dark theme (pkgdown 2.2.1 architecture)
 
@@ -77,7 +266,7 @@ color #59aaea").
 Task-specific logo build decisions — kept here, out of AGENTS.md, because they
 are specific to the logo-generation task and its regeneration runs.
 
-The 6 package logos are rebuilt on a common shell:
+The 6 package logos share a common shell:
 
 - **Elements (only 3):** the **package name** (much larger), a **glyph** (a
   transparent **symmetric pyramidal tract** that fans left/right and fills the
@@ -85,22 +274,21 @@ The 6 package logos are rebuilt on a common shell:
 - **Background:** white / light. **Border:** black hexagon `#111111`,
   **pointy-top**, `R = 300`, canvas `W = 520` (round(sqrt(3)*R)),
   `H = 600` (round(2*R)).
-- **Cone glyph (APPROVED v24):** the **exact-symmetric butterfly** built from a
-  single hemisphere via `mirror_x_side="L"` in `build-scene.R`:
-  `bL = cl[iL]` (30 crown-sampled CST_L streamlines) as the left wing, right
-  wing = `mirror_x(bL)` reflected across X = 0. This replaces the old merge of
-  the two unequal anatomy halves (which was right-hemisphere-heavier). Rendered
-  at `splay 0` (raw, uncanted anatomy), tinted with the package color.
+- **Cone glyph:** the **exact-symmetric butterfly** built from a single
+  hemisphere via `mirror_x_side="L"` in `build-scene.R`: `bL = cl[iL]` (30
+  crown-sampled CST_L streamlines) as the left wing, right wing =
+  `mirror_x(bL)` reflected across X = 0. This gives a perfectly symmetric cone
+  (the two anatomy halves differ and would otherwise render right-hemisphere-
+  heavier). Rendered at `splay 0` (raw, uncanted anatomy), tinted with the
+  package color.
 - **Per-package color everywhere:** tract, name, and icon all use the package
   palette color.
 
-### Emblem = FontAwesome icons (hand-drawn polygon emblem REJECTED)
+### Emblem = FontAwesome icons
 
-Do NOT hand-draw/draw the emblem with polygons (the earlier class-emblem
-polygon was rejected as "super ugly; bundles are super fuzzy"). Use FontAwesome
-icons instead, per package (`fontawesome` v0.5.3; `rsvg` renders SVG → 600×600
-RGBA PNG with the shape in the alpha channel, which is chroma-keyed into an
-alpha mask and tinted with the package color):
+Use FontAwesome icons, per package (`fontawesome` v0.5.3; `rsvg` renders SVG →
+600×600 RGBA PNG with the shape in the alpha channel, which is chroma-keyed
+into an alpha mask and tinted with the package color):
 
 | Package | FontAwesome icon |
 |---------|------------------|
@@ -121,35 +309,30 @@ alpha mask and tinted with the package color):
   vertical axis. Guarantee the tract's **content centre-of-mass lands on the
   hex center (col W/2 = 260)** rather than centering only the bounding box.
 - Vertical placement fills the pointy-top hexagon symmetrically (apexes near
-  top/bottom), as in `logo-fiber-v15.png` / `logo-fiber-v18-test.png`.
+  top/bottom).
 
-### Render parameters (agreed) — RE-BUILD renders with these
+### Render parameters (agreed)
 
-- **30 streamlines per side** (`nL = 30`, `nR = 30`), not the old 120/side.
+- **30 streamlines per side** (`nL = 30`, `nR = 30`).
 - **Downsampling is done in the densest areas on the top area** (the crown /
   uppermost part of each bundle), so the sparse fan stays even near the apex.
-  This replaces the old uniform `sample.int(5577, 120)` / `sample.int(2397, 120)`.
-- **Re-implemented and PERSISTED** in `data-raw/crown-sample.R` (canonical;
-  supersedes the old scratch `/tmp/pa-501/logos3/crown-sample.R`):
+- **Re-implemented and PERSISTED** in `data-raw/crown-sample.R` (canonical):
   `crown_sample(bundle, n=30, z_frac=0.25)` selects the crown (points at
   Z >= zmin + 0.25*(zmax-zmin), the uppermost slab), orders streamlines by
   their crown fan position (mean X of their crown points), then takes
   DETERMINISTIC even spacing (~ns/n rank step) for full-width, even-near-apex
   coverage. `make_crown_strat(path, n)` writes the `list(iL=, iR=)` index rds.
-  This replaced the earlier interactive algorithm (lost; only its
-  `crown_strat_*.rds` outputs survived). The re-implementation matches the
-  original's measured span (left crown-X ~[-48.8,-11.1], peak-Z ~[50.4,77.1]).
-  The old `crown_strat_*.rds` indices were NOT reproducible (interactive
-  density thinning) - visual parity is the goal, validated by pixels + review.
+  The selection is validated by measurable pixel properties + user review
+  (measured span: left crown-X ~[-48.8,-11.1], peak-Z ~[50.4,77.1]).
 
 ### Build pipeline (canonical: `data-raw/`, driver = `logo-family.R`)
 
 The minimal `data-raw/` set regenerates the full 6-package light-bg family from
 scratch. Single entry point: `Rscript data-raw/logo-family.R` (from repo root;
-`--pkg fiber` smoke-tests one). Runs the v24-approved exact-symmetric butterfly:
+`--pkg fiber` smoke-tests one). Runs the exact-symmetric butterfly:
 
 1. `crown-sample.R` — `crown_sample()`, `make_crown_strat()`.
-2. `build-scene.R` — `PALETTE`, `make_scene()` (v24 `mirror_x_side="L"`
+2. `build-scene.R` — `PALETTE`, `make_scene()` (`mirror_x_side="L"`
    single-hemisphere exact-symmetric butterfly: `bL = cl[iL]`, `bR =
    mirror_x(bL)` across X=0; `cam_view=c(0,1,0)`, `cam_up=c(0,0,1)`,
    `cam_dist=1.9`), `mirror_x()`, `patch_camera()`, `patch_axes()`,
@@ -159,11 +342,9 @@ scratch. Single entry point: `Rscript data-raw/logo-family.R` (from repo root;
    black-bg screenshot and **centers the content centre-of-mass on col 260**.
 4. `screenshot.R` — chromote (the webshot2 browser lib) + a Chrome-for-Testing
    build screenshots the served widget (`--use-gl=swiftshader`, 1200x1200
-   viewport, DPR=2), replacing the old Playwright `screenshot.py`.
+   viewport, DPR=2).
 5. Widget is served in-process by **`httpuv::runStaticServer`** (no Python
    subprocess; `srv$getPort()` → `screenshot.R`; `on.exit(httpuv::stopServer)`).
-   Replaced the old python3 `http.server` + shell port-finder, whose embedded
-   single quotes broke through `sh -c`.
 
 **cl/cr sourcing**: `logo-family.R` loads CST_L/CST_R from the gitignored
 `data-raw/.render/` cache (seeded: `HCP1065_CST_L.rds` 3.08MB / `CST_R.rds`
@@ -175,11 +356,9 @@ Outputs → `inst/brand/logos/{pkg}.png` + `tractoverse.png` (1290x1680 white,
 2x3 grid on a 600x520 canvas at 1-based origins: fiber(30,30), master(30,580),
 rtists(30,1130), riot(660,30), toad(660,580), bot(660,1130)).
 
-**Determinism / v24 note**: screenshot, compose, and crown-strat are all
-deterministic (two screenshots of one scene are byte-identical; crown indices
-reproduce exactly from the cached bundles). Regenerated logos are structurally
-identical to the approved v24 (tract axis col 260, same bbox, glyph fills the
-hexagon) but NOT byte-identical: the current crown_sample is a re-implementation
-aimed at **visual parity**, and v24's original streamline indices were
-interactive/non-reproducible and deleted. Confirm with the user whether visual
-parity is acceptable before overwriting `inst/brand/logos/` (back up first).
+**Determinism**: screenshot, compose, and crown-strat are all deterministic (two
+screenshots of one scene are byte-identical; crown indices reproduce exactly
+from the cached bundles). Regenerated logos should be structurally identical to
+the shipped ones (tract axis col 260, same bbox, glyph fills the hexagon);
+verify visually via the Positron Plots pane before overwriting
+`inst/brand/logos/` (back up first).
