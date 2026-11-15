@@ -181,6 +181,18 @@ pausing before each `master`→`main` rename for approval):
       platforms incl. macOS (now pulling fixed rvtk `49b8cfc`), test-coverage, and
       pkgdown all pass. README.qmd/README.md (mermaid dependency diagram) shipped
       to `main` via PR #1.**
+- [x] pkgdown SVG-favicon smart-quote fix (meta-package only): pkgdown 2.2.1's
+      installed `BS5/templates/head.html` line 9 ships
+      `<link rel="icon" type="”image/svg+xml”">` with typographic U+201D quotes —
+      an **upstream pkgdown bug**, present in every package's *generated* `docs/`
+      (browsers ignore the `type` attr, so it does not break rendering). Fixed
+      locally by vendoring a byte-identical override at
+      `pkgdown/templates/head.html` (line 9 quotes corrected to straight `"`;
+      `^pkgdown$` in `.Rbuildignore` keeps it out of the built package). Only the
+      meta-package gets the override (brand hub); the other package sites inherit
+      the fix when pkgdown updates. **Upstream issue filed: r-lib/pkgdown#3038**
+      (bug confirmed still present on pkgdown `main` in both BS3+BS5 head.html;
+      no existing open issue). Override + note landed via PR #2.
 
 ## Decisions log
 
