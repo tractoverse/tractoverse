@@ -45,6 +45,7 @@ recorded in the logo build notes in DECISIONS.md.
   the assistant **cannot see rendered images**, so anything visual is
   validated by measurable pixel properties plus user feedback on the
   Positron Plots pane.
+
 - **License: MIT** (meta-package, `MIT + file LICENSE`). Before shipping
   anything that vendors/bundles third-party code (from
   `astamm.github.io` / the rtists package, or any other project), verify
@@ -52,13 +53,36 @@ recorded in the logo build notes in DECISIONS.md.
   (embedding/minification/re-export) and record provenance in
   `inst/brand/NOTICE`. See also the global licensing rule in user
   memory.
+
 - **Do not** use any external reference image (license may be
   incompatible).
+
 - **Do not** edit rtists source (used as a library, not vendored).
+
+- **Solo PR merges work via admin exemption:** every tractoverse repo’s
+  branch protection has `enforce_admins: false`, so astamm (sole admin)
+  bypasses the 1-required-review rule and can merge their own PRs. Use
+  `gh pr merge <n> --merge --admin` (or the web UI’s admin override);
+  this is how riot and toad brand PRs were merged. Standard merge
+  commit, not squash. No protection change is needed for a solo
+  contributor.
+
+- **Branch protection needs ≥1 real R source file:** a bare skeleton
+  package with an empty `R/` dir (no source) fails BOTH required
+  toad/base-6 CI checks — test-coverage’s covr errors
+  (`cannot open '.../R/<pkg>'`) and R-CMD-check’s
+  `no parsed files found` + example `unstated dependencies` WARNING
+  (with `error_on=warning` → exit 1). Land at least one real R file
+  (e.g. a placeholder export) via a PR and get CI green BEFORE applying
+  protection to a branch, or the required checks can never pass. (Found
+  when protecting bot’s `main`.)
+
 - RNG seeds must be a random integer in 1–10,000 (never 123/42/etc.).
+
 - Prefer [`file.exists()`](https://rdrr.io/r/base/files.html) over
   [`dir.exists()`](https://rdrr.io/r/base/files2.html) for existence
   checks.
+
 - **Filename convention: dashes, not underscores** in `data-raw/`
   scripts (e.g. `compose-logo.R`, `crown-sample.R`, `build-scene.R`,
   `logo-family.R`, `screenshot.R`). R **function/object names stay

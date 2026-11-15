@@ -25,6 +25,8 @@ Useful links:
 
 - <https://github.com/tractoverse/tractoverse>
 
+- <https://tractoverse.github.io/tractoverse/>
+
 - Report bugs at <https://github.com/tractoverse/tractoverse/issues>
 
 ## Author

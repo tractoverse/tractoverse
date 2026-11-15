@@ -19,13 +19,52 @@ whole family:
 The package also ships the shared tractoverse **brand** — the colors,
 theme and logo family above — as the single source of truth reused by
 the individual package websites and applications. See
-\[tractoverse_brand()\] and \[tractoverse_theme()\].
+`[tractoverse_brand()]` and `[tractoverse_theme()]`.
+
+``` mermaid
+flowchart LR
+  classDef fiber fill:#59aaea,stroke:#59aaea,color:#000
+  classDef master fill:#ff9441,stroke:#ff9441,color:#000
+  classDef rtists fill:#a980fc,stroke:#a980fc,color:#000
+  classDef riot fill:#3ec4b2,stroke:#3ec4b2,color:#000
+  classDef toad fill:#ffcf1b,stroke:#ffcf1b,color:#000
+  classDef bot fill:#3fb950,stroke:#3fb950,color:#000
+  classDef rvtk fill:#ffffff,stroke:#888,color:#333
+
+  tractoverse --> fiber
+  tractoverse --> master
+  tractoverse --> rtists
+  tractoverse --> riot
+  tractoverse --> toad
+  tractoverse --> bot
+
+  master --> fiber
+  rtists --> fiber
+  toad --> fiber
+  riot --> fiber
+  riot --> rvtk
+
+  class fiber fiber
+  class master master
+  class rtists rtists
+  class riot riot
+  class toad toad
+  class bot bot
+  class rvtk rvtk
+```
+
+Dependencies among the family: `fiber` is the root, providing the shared
+data structures; `master`, `rtists`, `toad` and `riot` all build on
+`fiber`; `riot` additionally depends on the external `rvtk` package for
+data I/O; and `tractoverse` (the meta-package) imports all six core
+packages. `bot` currently declares no dependencies (it will build on
+`fiber` as its statistical methods land).
 
 ## Installation
 
 The core packages are released on CRAN when available and developed on
 GitHub otherwise. The simplest way to bring in any selection of the
-family is \[install_core_packages()\], which prefers the CRAN release
+family is `[install_core_packages()]`, which prefers the CRAN release
 and falls back to the GitHub development branch:
 
 ``` r
@@ -77,7 +116,7 @@ tractoverse_brand()$palette
 # "#59aaea" "#ff9441" "#a980fc" "#3ec4b2" "#ffcf1b" "#3fb950"
 ```
 
-\[tractoverse_theme()\] returns the path to the shared dark theme
+`[tractoverse_theme()]` returns the path to the shared dark theme
 stylesheet for tractoverse Quarto / pkgdown sites.
 
 ## Code of conduct

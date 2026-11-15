@@ -73,18 +73,15 @@
 </div>
 <div class="section level2">
 <h2 id="working-conventions">Working conventions<a class="anchor" aria-label="anchor" href="#working-conventions"></a></h2>
-<ul><li>
-<strong>R is the live workspace.</strong> The running R session is the workspace; the assistant <strong>cannot see rendered images</strong>, so anything visual is validated by measurable pixel properties plus user feedback on the Positron Plots pane.</li>
-<li>
-<strong>License: MIT</strong> (meta-package, <code>MIT + file LICENSE</code>). Before shipping anything that vendors/bundles third-party code (from <code>astamm.github.io</code> / the rtists package, or any other project), verify every vendored file’s license permits the exact use (embedding/minification/re-export) and record provenance in <code>inst/brand/NOTICE</code>. See also the global licensing rule in user memory.</li>
-<li>
-<strong>Do not</strong> use any external reference image (license may be incompatible).</li>
-<li>
-<strong>Do not</strong> edit rtists source (used as a library, not vendored).</li>
-<li>RNG seeds must be a random integer in 1–10,000 (never 123/42/etc.).</li>
-<li>Prefer <code><a href="https://rdrr.io/r/base/files.html" class="external-link">file.exists()</a></code> over <code><a href="https://rdrr.io/r/base/files2.html" class="external-link">dir.exists()</a></code> for existence checks.</li>
-<li>
-<strong>Filename convention: dashes, not underscores</strong> in <code>data-raw/</code> scripts (e.g. <code>compose-logo.R</code>, <code>crown-sample.R</code>, <code>build-scene.R</code>, <code>logo-family.R</code>, <code>screenshot.R</code>). R <strong>function/object names stay snake_case</strong> (e.g. <code>compose_logo()</code>, <code>crown_sample()</code>), as do variables, fields, and <code>.R</code> files outside <code>data-raw/</code> (e.g. package <code>R/</code> files). Apply dashes broadly to future multi-word script/resource filenames unless a convention (e.g. an existing package layout) mandates underscores.</li>
+<ul><li><p><strong>R is the live workspace.</strong> The running R session is the workspace; the assistant <strong>cannot see rendered images</strong>, so anything visual is validated by measurable pixel properties plus user feedback on the Positron Plots pane.</p></li>
+<li><p><strong>License: MIT</strong> (meta-package, <code>MIT + file LICENSE</code>). Before shipping anything that vendors/bundles third-party code (from <code>astamm.github.io</code> / the rtists package, or any other project), verify every vendored file’s license permits the exact use (embedding/minification/re-export) and record provenance in <code>inst/brand/NOTICE</code>. See also the global licensing rule in user memory.</p></li>
+<li><p><strong>Do not</strong> use any external reference image (license may be incompatible).</p></li>
+<li><p><strong>Do not</strong> edit rtists source (used as a library, not vendored).</p></li>
+<li><p><strong>Solo PR merges work via admin exemption:</strong> every tractoverse repo’s branch protection has <code>enforce_admins: false</code>, so astamm (sole admin) bypasses the 1-required-review rule and can merge their own PRs. Use <code>gh pr merge &lt;n&gt; --merge --admin</code> (or the web UI’s admin override); this is how riot and toad brand PRs were merged. Standard merge commit, not squash. No protection change is needed for a solo contributor.</p></li>
+<li><p><strong>Branch protection needs ≥1 real R source file:</strong> a bare skeleton package with an empty <code>R/</code> dir (no source) fails BOTH required toad/base-6 CI checks — test-coverage’s covr errors (<code>cannot open '.../R/&lt;pkg&gt;'</code>) and R-CMD-check’s <code>no parsed files found</code> + example <code>unstated dependencies</code> WARNING (with <code>error_on=warning</code> → exit 1). Land at least one real R file (e.g. a placeholder export) via a PR and get CI green BEFORE applying protection to a branch, or the required checks can never pass. (Found when protecting bot’s <code>main</code>.)</p></li>
+<li><p>RNG seeds must be a random integer in 1–10,000 (never 123/42/etc.).</p></li>
+<li><p>Prefer <code><a href="https://rdrr.io/r/base/files.html" class="external-link">file.exists()</a></code> over <code><a href="https://rdrr.io/r/base/files2.html" class="external-link">dir.exists()</a></code> for existence checks.</p></li>
+<li><p><strong>Filename convention: dashes, not underscores</strong> in <code>data-raw/</code> scripts (e.g. <code>compose-logo.R</code>, <code>crown-sample.R</code>, <code>build-scene.R</code>, <code>logo-family.R</code>, <code>screenshot.R</code>). R <strong>function/object names stay snake_case</strong> (e.g. <code>compose_logo()</code>, <code>crown_sample()</code>), as do variables, fields, and <code>.R</code> files outside <code>data-raw/</code> (e.g. package <code>R/</code> files). Apply dashes broadly to future multi-word script/resource filenames unless a convention (e.g. an existing package layout) mandates underscores.</p></li>
 </ul></div>
 <div class="section level2">
 <h2 id="logo-pipeline">Logo pipeline<a class="anchor" aria-label="anchor" href="#logo-pipeline"></a></h2>
