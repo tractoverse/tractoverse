@@ -22,12 +22,16 @@ navbar:
   structure:
     left:
     - reference
+    - packages
     - articles
     right: github
   components:
     reference:
       text: Reference
       href: reference/index.html
+    packages:
+      text: Packages
+      href: articles/packages.html
     articles:
       text: News
       href: news/index.html
