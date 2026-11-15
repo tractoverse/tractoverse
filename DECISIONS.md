@@ -118,16 +118,20 @@ pausing before each `master`→`main` rename for approval):
         (decided with user, stricter): riot's `main` requires **8** status checks
         (riot's full matrix incl. `ubuntu-latest (release) - without preinstalled
         VTK` and `pkgdown`), not the base 6.
-- [ ] toad (already on `main`): use_logo (**authored
+- [x] toad (already on `main`): use_logo (**authored
       `inst/brand/logos/toad.png`**; currently uses a non-authored logo),
-      README.qmd + build_readme, pkgdown brand (`#ffcf1b`). **IN PROGRESS
-      (Nov 15):** brand work prepared on `fix/brand`, **PR #15 OPEN** (docs-only:
-      authored logo → `man/figures/logo.png`, `pkgdown/extra.scss` `#ffcf1b`
-      accent, dark brand `_pkgdown.yml`, favicons regenerated, `pkgdown` to
-      Suggests; README.md verified in sync). **All 8 CI checks PASS** (macos/
-      windows/ubuntu release+devel+oldrel + test-coverage + pkgdown + codecov);
-      merge BLOCKED only by toad's required 1 approving review (base protection:
-      6 checks — not the stricter 8 riot uses). Awaiting user review then merge.
+      README.qmd + build_readme, pkgdown brand (`#ffcf1b`). **DONE (Nov 15):**
+      brand work on `fix/brand` → **PR #15 MERGED** (merge commit `2a76771`,
+      merge commit, not squash — matches riot). Docs-only: authored logo →
+      `man/figures/logo.png`, `pkgdown/extra.scss` `#ffcf1b` accent, dark brand
+      `_pkgdown.yml`, favicons regenerated, `pkgdown` to Suggests; README.md
+      verified in sync. All 8 CI checks passed. **Merge note — the 1-review rule
+      is NOT a solo blocker:** `enforce_admins` is `false` on every tractoverse
+      repo, so astamm (sole admin) bypasses the required-review check — that's
+      how riot's #14/#15 were also merged by the author. CLI: `gh pr merge 15
+      --merge --admin`. Web UI: admin sees the merge override. No protection
+      change was needed (toad matches the family: 1 review, strict, checks =
+      base 6).
 - [ ] bot: use_logo (**authored `inst/brand/logos/bot.png`**; no logo yet),
       README.qmd + build_readme, pkgdown brand (`#3fb950`; also needs
       use_pkgdown_github_pages + DESCRIPTION license cleanup) — then **pause

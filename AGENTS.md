@@ -50,6 +50,12 @@ recorded in the logo build notes in DECISIONS.md.
   `inst/brand/NOTICE`. See also the global licensing rule in user memory.
 - **Do not** use any external reference image (license may be incompatible).
 - **Do not** edit rtists source (used as a library, not vendored).
+- **Solo PR merges work via admin exemption:** every tractoverse repo's branch
+  protection has `enforce_admins: false`, so astamm (sole admin) bypasses the
+  1-required-review rule and can merge their own PRs. Use `gh pr merge <n>
+  --merge --admin` (or the web UI's admin override); this is how riot and toad
+  brand PRs were merged. Standard merge commit, not squash. No protection change
+  is needed for a solo contributor.
 - RNG seeds must be a random integer in 1–10,000 (never 123/42/etc.).
 - Prefer `file.exists()` over `dir.exists()` for existence checks.
 - **Filename convention: dashes, not underscores** in `data-raw/` scripts (e.g.
