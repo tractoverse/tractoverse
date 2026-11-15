@@ -176,10 +176,11 @@ pausing before each `master`→`main` rename for approval):
   transport`, base `master`) was closed-not-merged by the rename; its work is
   superseded by PR #3. Stale remote `placeholder/optimal-transport` branch left
   in place.
-- [ ] After rvtk #6 + bot #1 (now #3) merge, re-run tractoverse CI to confirm green.
-      **PR #1 merged; CI re-run dispatched on `main` (workflow_dispatch, 18:01 UTC) —
-      verify all 3 workflows (R-CMD-check 5-matrix + test-coverage + pkgdown) green,
-      incl. macos now pulling fixed rvtk `49b8cfc`.**
+- [x] After rvtk #6 + bot #1 (now #3) merge, re-run tractoverse CI to confirm green.
+      **CONFIRMED GREEN (Nov 15, workflow_dispatch on `main`): R-CMD-check all 5
+      platforms incl. macOS (now pulling fixed rvtk `49b8cfc`), test-coverage, and
+      pkgdown all pass. README.qmd/README.md (mermaid dependency diagram) shipped
+      to `main` via PR #1.**
 
 ## Decisions log
 
