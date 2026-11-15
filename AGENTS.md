@@ -56,6 +56,14 @@ recorded in the logo build notes in DECISIONS.md.
   --merge --admin` (or the web UI's admin override); this is how riot and toad
   brand PRs were merged. Standard merge commit, not squash. No protection change
   is needed for a solo contributor.
+- **Branch protection needs ≥1 real R source file:** a bare skeleton package
+  with an empty `R/` dir (no source) fails BOTH required toad/base-6 CI checks —
+  test-coverage's covr errors (`cannot open '.../R/<pkg>'`) and R-CMD-check's
+  `no parsed files found` + example `unstated dependencies` WARNING (with
+  `error_on=warning` → exit 1). Land at least one real R file (e.g. a placeholder
+  export) via a PR and get CI green BEFORE applying protection to a branch, or
+  the required checks can never pass. (Found when protecting bot's `main`.)
+
 - RNG seeds must be a random integer in 1–10,000 (never 123/42/etc.).
 - Prefer `file.exists()` over `dir.exists()` for existence checks.
 - **Filename convention: dashes, not underscores** in `data-raw/` scripts (e.g.

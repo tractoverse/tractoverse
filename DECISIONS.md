@@ -148,7 +148,31 @@ pausing before each `master`→`main` rename for approval):
       `--admin` needed). Local `master` synced to `d39c0be`, `fix/brand`
       deleted. Deferred to rename+protection phase: live GitHub Pages
       deploy + the full CI matrix (R-CMD-check/test-coverage) bot still lacks.
-- [ ] After rvtk #6 + bot #1 merge, re-run tractoverse CI to confirm green.
+  **RENAME + PROTECTION DONE (Nov 15):** bot `master`→`main` (default set via
+  `gh repo edit --default-branch main`, origin/HEAD updated, old `master`
+  deleted). Copied toad's pure-R CI into bot (R-CMD-check.yaml +
+  test-coverage.yaml, checkout@v7 / check-r-package@v2 / codecov v7.1.1, plus
+  `workflow_dispatch` trigger `0eb80c8`), `.gitignore` `docs`, pkgdown.yaml
+  push → `[main]` (`91973b8`). **Blocker discovered:** bot `main` had an empty
+  `R/` dir (no source at all) → both required checks failed (test-coverage covr
+  `cannot open .../bot/R/bot`; R-CMD-check `no parsed files found` +
+  `unstated dependencies` example WARNING with `error_on=warning`). Protection
+  requires ≥1 real R source file. **Unlocked via PR #3** (`feat/optimal-
+  transport-placeholder`, base `main`): ported `R/zzz.R` +
+  `man/optimal_transport.Rd` (the `optimal_transport` stub from superseded PR
+  #1, kept for the meta-package's `ignore_unused_imports()` →
+  `bot::optimal_transport`), DESCRIPTION kept `RoxygenNote: 8.0.0` (removed
+  roxygen 8.1.1's auto-added `Config/roxygen2/version` — campaign precedent).
+  CI green (R-CMD-check 5/5 + test-coverage), merge commit `3bb27d9` (standard
+  merge, main still unprotected). **Then applied base-6 protection to `main`**
+  (toad template): 6 required status checks (5 R-CMD-check matrix +
+  `test-coverage`), strict=true, 1 required approving review, dismiss_stale
+  false, enforce_admins=false (solo bypass intact), force-push/deletion
+  blocked. Local feat branch deleted. Note: PR #1 (`placeholder/optimal-
+  transport`, base `master`) was closed-not-merged by the rename; its work is
+  superseded by PR #3. Stale remote `placeholder/optimal-transport` branch left
+  in place.
+- [ ] After rvtk #6 + bot #1 (now #3) merge, re-run tractoverse CI to confirm green.
 
 ## Decisions log
 
