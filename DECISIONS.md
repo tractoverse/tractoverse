@@ -124,9 +124,10 @@ pausing before each `master`→`main` rename for approval):
       (Nov 15):** brand work prepared on `fix/brand`, **PR #15 OPEN** (docs-only:
       authored logo → `man/figures/logo.png`, `pkgdown/extra.scss` `#ffcf1b`
       accent, dark brand `_pkgdown.yml`, favicons regenerated, `pkgdown` to
-      Suggests; README.md verified in sync). Awaiting 6 checks + review before
-      merge onto `main` (toad base protection: 6 checks — not the stricter 8
-      riot uses).
+      Suggests; README.md verified in sync). **All 8 CI checks PASS** (macos/
+      windows/ubuntu release+devel+oldrel + test-coverage + pkgdown + codecov);
+      merge BLOCKED only by toad's required 1 approving review (base protection:
+      6 checks — not the stricter 8 riot uses). Awaiting user review then merge.
 - [ ] bot: use_logo (**authored `inst/brand/logos/bot.png`**; no logo yet),
       README.qmd + build_readme, pkgdown brand (`#3fb950`; also needs
       use_pkgdown_github_pages + DESCRIPTION license cleanup) — then **pause
