@@ -88,16 +88,36 @@ pausing before each `master`→`main` rename for approval):
       **PR #4** = `threejs-binary-backend` (three.js backend, full original
       body restored) — both OPEN, unmerged. Old #1/#2 stay closed (history
       kept). `rtists-api` can only be added to `_pkgdown.yml` after #4 merges.**
-- [ ] riot: use_logo (**authored `inst/brand/logos/riot.png`**; currently uses a
-      non-authored logo), README.qmd + build_readme, pkgdown brand (`#3ec4b2`)
-      — then **pause before `master`→`main` rename + protection**.
-      **STATUS (Nov 14):** brand work committed on `fix/brand` (8fb78bb) and
-      **PR #14** opened (`fix/brand` → `master`): authored logo via use_logo,
-      README.qmd rebuilt, dark tractoverse pkgdown brand (`#3ec4b2` accent,
-      darkly + arrow-dark + bootstrap-icons), favicons regenerated from the
-      authored logo, pkgdown added to Suggests. Validated: SCSS compiles, YAML
-      parses, local pkgdown build applies the accent. **Paused before
-      `master`→`main` rename + protection — resume after PR #14 merges.**
+- [x] riot: use_logo (**authored `inst/brand/logos/riot.png`**), README.qmd +
+      build_readme, pkgdown brand (`#3ec4b2`), then `master`→`main` rename +
+      protection. **COMPLETE (Nov 15).** Brand (PR #14) + a functional fix
+      (PR #15) both merged onto `master`, then renamed `master`→`main` and
+      protected. Sequence & caveats:
+      - PR #14 (docs/brand only) initially FAILED all R-CMD-check jobs: a real
+        pre-existing bug in `bundle_to_flat_list()` (R/bundle.R) read the
+        per-streamline `@streamline_data` slots, which fiber's modern API hoists
+        to the bundle level — so the bundle→flat-list round-trip silently dropped
+        `streamline_data` columns. Riot's test_bundle.R lines 62-63/86 asserted
+        the stale per-streamline semantics.
+      - **Shipped the fix as a SEPARATE PR** (`fix/bundle-flatlist2` → master,
+        **PR #15**), keeping concerns clean vs. the docs-only brand PR #14. Fix:
+        `bundle_to_flat_list()` now reads bundle-level `x@streamline_data`
+        (broadcasting `[[i]]` over `n_pts`) plus any not-lifted per-streamline
+        keys via `setdiff`; test lines 62-63 switched to the public `[[` accessor.
+        Full riot tinytest suite passes locally (111/111) and all CI checks green.
+      - **Rebase-without-force-push:** after #15 merged, PR #14's branch still had
+        the old base, so its re-run failed on the stale test. Couldn't force-push
+        (policy). Fixed by **merging `origin/master` into `fix/brand`** (forward
+        merge, non-force push) → branch inherits the fix, diff vs master stays
+        docs-only, CI turns green, merge state CLEAN. (Retargeting a PR's head via
+        `gh api` PATCH is NOT supported by GitHub; the merge approach is the way.)
+      - Rename + protection applied to `main` (default_branch PATCH → `main`,
+        origin/HEAD → `main`, remote & local `master` deleted, local `main`
+        tracks `origin/main`), full toad-model protection (1 review, strict,
+        force-push/deletion blocked, enforce-admins off). **DEVIATION from toad**
+        (decided with user, stricter): riot's `main` requires **8** status checks
+        (riot's full matrix incl. `ubuntu-latest (release) - without preinstalled
+        VTK` and `pkgdown`), not the base 6.
 - [ ] toad (already on `main`): use_logo (**authored
       `inst/brand/logos/toad.png`**; currently uses a non-authored logo),
       README.qmd + build_readme, pkgdown brand (`#ffcf1b`).
