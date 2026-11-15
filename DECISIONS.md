@@ -66,27 +66,31 @@ base `master`). - \[x\] Add mermaid dependency diagram to tractoverse
 README.qmd + build_readme (committed 0824643, pushed to
 `step6-docs-brand`). - \[x\] Decide branch protection: **per-repo, as in
 toad** (org rulesets blocked on free plan) — see *Branch protection*
-decision below. - \[~\] tractoverse: push `cb7c4aa..0824643` to
-origin/step6-docs-brand (PR \#1) — **middle commits pushed; final commit
-pushed; verify PR page**. - \[x\] fiber: pkgdown dark brand (committed
-5599b11 on `fix/bundle-set-methods-and-attributes`); **logo corrected**
-to authored `inst/brand/logos/fiber.png` + favicons regenerated +
-dropped obsolete `data-raw/logo-fiber.R` (committed f3da830). **Renamed
-`master`→`main`** (default branch now `main`; remote `master` deleted;
-local `main` tracks `origin/main`; CI triggers already list `main`) and
-applied the **toad-model protection** to `main` — fiber is protected per
-toad model (see *Branch protection*). - \[x\] master (already on
-`main`): pkgdown dark brand + README (committed 49d5b10); **logo
-corrected** to authored `inst/brand/logos/master.png` + favicons
-regenerated (committed 10d1ca2). **Protection applied to `main`**
-matching master’s CI (pkgdown.yaml only, no R-CMD-check/test-coverage):
-1 approving review + required `pkgdown` status check (strict),
-force-push block, enforce-admins off — NOT the full toad 6-check model,
-since master does not run those checks. - \[x\] rtists: pkgdown brand
-(`#a980fc`; dark darkly + arrow-dark theme, extra.scss tokens, authored
-logo at `man/figures/logo.png`, favicons, pkgdown in Suggests) committed
-on `fix/brand-docs` (PR \#2). README.qmd already referenced the logo
-path (README.md now resolves it); no further build_readme needed. NOTE:
+decision below. - \[x\] tractoverse: push `cb7c4aa..0824643` to
+origin/step6-docs-brand (PR \#1) — **PR \#1 MERGED → main (2026-11-15)**
+via standard merge commit `4ffdb49` after re-pushing local `main`’s 5
+previously-unpublished campaign commits (origin/main 1f32274). Added
+`workflow_dispatch` to R-CMD-check + test-coverage (`6748442`) so CI can
+be re-run manually on `main`. Merged branch deleted. - \[x\] fiber:
+pkgdown dark brand (committed 5599b11 on
+`fix/bundle-set-methods-and-attributes`); **logo corrected** to authored
+`inst/brand/logos/fiber.png` + favicons regenerated + dropped obsolete
+`data-raw/logo-fiber.R` (committed f3da830). **Renamed `master`→`main`**
+(default branch now `main`; remote `master` deleted; local `main` tracks
+`origin/main`; CI triggers already list `main`) and applied the
+**toad-model protection** to `main` — fiber is protected per toad model
+(see *Branch protection*). - \[x\] master (already on `main`): pkgdown
+dark brand + README (committed 49d5b10); **logo corrected** to authored
+`inst/brand/logos/master.png` + favicons regenerated (committed
+10d1ca2). **Protection applied to `main`** matching master’s CI
+(pkgdown.yaml only, no R-CMD-check/test-coverage): 1 approving review +
+required `pkgdown` status check (strict), force-push block,
+enforce-admins off — NOT the full toad 6-check model, since master does
+not run those checks. - \[x\] rtists: pkgdown brand (`#a980fc`; dark
+darkly + arrow-dark theme, extra.scss tokens, authored logo at
+`man/figures/logo.png`, favicons, pkgdown in Suggests) committed on
+`fix/brand-docs` (PR \#2). README.qmd already referenced the logo path
+(README.md now resolves it); no further build_readme needed. NOTE:
 `_pkgdown.yml` articles currently list only `rtists` — `rtists-api` must
 be readded once the `threejs-binary-backend` PR (#1, which introduces
 that vignette) is merged/reopened. **Renamed `master`→`main`** (default
@@ -189,6 +193,10 @@ force-push/deletion blocked. Local feat branch deleted. Note: PR \#1
 by the rename; its work is superseded by PR \#3. Stale remote
 `placeholder/optimal-transport` branch left in place. - \[ \] After rvtk
 \#6 + bot \#1 (now \#3) merge, re-run tractoverse CI to confirm green.
+**PR \#1 merged; CI re-run dispatched on `main` (workflow_dispatch,
+18:01 UTC) — verify all 3 workflows (R-CMD-check 5-matrix +
+test-coverage + pkgdown) green, incl. macos now pulling fixed rvtk
+`49b8cfc`.**
 
 ## Decisions log
 
