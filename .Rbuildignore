@@ -11,3 +11,4 @@
 ^\.vscode$
 ^README\.qmd$
 ^cran-comments\.md$
+^vignettes$
