@@ -5,7 +5,23 @@ the tractoverse visual identity: the dark shell, the per-package signature
 colors, and the shared typography."><meta property="og:description" content="Returns the shared brand as an R data structure, mirroring `_brand.yml`
 shipped in `inst/brand/_brand.yml`. This is the single source of truth for
 the tractoverse visual identity: the dark shell, the per-package signature
-colors, and the shared typography."><meta property="og:image" content="https://tractoverse.github.io/tractoverse/logo.png"><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css"></head><body>
+colors, and the shared typography."><meta property="og:image" content="https://tractoverse.github.io/tractoverse/logo.png"><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css"><script type="module">
+  import mermaid from "https://cdn.jsdelivr.net/npm/mermaid@11/dist/mermaid.esm.min.mjs";
+  // pkgdown renders README.qmd mermaid blocks with pandoc (not Quarto), which wraps
+  // the diagram text in <pre class="mermaid"><code>…</code></pre>. mermaid's own
+  // startOnLoad/run() mis-reads that nested markup ("No diagram type detected"), so
+  // drive rendering explicitly from the element's textContent. README.qmd is the single
+  // source for both the GitHub README (mermaid renders natively there) and this home page.
+  mermaid.initialize({ startOnLoad: false });
+  document.addEventListener("DOMContentLoaded", async () => {
+    for (const el of document.querySelectorAll(".mermaid")) {
+      try {
+        const { svg } = await mermaid.render("mm", el.textContent);
+        el.innerHTML = svg;
+      } catch (e) { el.dataset.mmError = String((e && e.message) || e); }
+    }
+  });
+</script></head><body>
     <a href="#main" class="visually-hidden-focusable">Skip to contents</a>
 
 
