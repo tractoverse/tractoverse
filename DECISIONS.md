@@ -132,20 +132,21 @@ pausing before each `master`→`main` rename for approval):
       --merge --admin`. Web UI: admin sees the merge override. No protection
       change was needed (toad matches the family: 1 review, strict, checks =
       base 6).
-- [ ] bot (on `master`, bare skeleton pkg): use_logo (**authored
-      `inst/brand/logos/bot.png`**, no logo yet), README.qmd + build_readme,
-      pkgdown brand (`#3fb950`; also needs use_pkgdown_github_pages +
-      DESCRIPTION license cleanup) — then **pause before `master`→`main`
-      rename + protection**. **IN PROGRESS (Nov 15):** brand work on
-      `fix/brand`, **PR #2 OPEN** against `master`. Docs-only: authored logo →
+- [x] bot (on `master`, bare skeleton pkg): use_logo (**authored
+      `inst/brand/logos/bot.png`**), README.qmd + build_readme,
+      pkgdown brand (`#3fb950`), DESCRIPTION license cleanup) — brand done,
+      **PAUSE before `master`→`main` rename + protection**. **DONE (Nov 15):**
+      brand work on `fix/brand`, **PR #2 MERGED** into `master` (merge commit
+      `d39c0be`, standard merge). Docs-only: authored logo →
       `man/figures/logo.png` (240x277, bot-green `#3FB950` family verified),
       dark `_pkgdown.yml` + `pkgdown/extra.scss` (`#3fb950`) + favicons,
-      README.qmd/README.md (honest stub status; **no badges** yet — bot has NO
-      R-CMD-check/Codecov workflows, only pkgdown.yaml added here), DESCRIPTION
+      README.qmd/README.md (honest stub status; **no badges** — bot has NO
+      R-CMD-check/Codecov workflows, only pkgdown.yaml added), DESCRIPTION
       cleaned (placeholder → real text, `MIT + file LICENSE` + LICENSE file,
-      `pkgdown` to Suggests), `.Rbuildignore` updated. **pkgdown check PASSES**
-      (2m47s); PR **CLEAN/MERGEABLE** (bot `master` unprotected → no review or
-      `--admin` needed). Deferred to rename+protection phase: live GitHub Pages
+      `pkgdown` to Suggests), `.Rbuildignore` updated. **pkgdown check PASSED**
+      (2m47s); PR was CLEAN/MERGEABLE (bot `master` unprotected → no review or
+      `--admin` needed). Local `master` synced to `d39c0be`, `fix/brand`
+      deleted. Deferred to rename+protection phase: live GitHub Pages
       deploy + the full CI matrix (R-CMD-check/test-coverage) bot still lacks.
 - [ ] After rvtk #6 + bot #1 merge, re-run tractoverse CI to confirm green.
 
