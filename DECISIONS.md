@@ -190,7 +190,9 @@ pausing before each `master`→`main` rename for approval):
       `pkgdown/templates/head.html` (line 9 quotes corrected to straight `"`;
       `^pkgdown$` in `.Rbuildignore` keeps it out of the built package). Only the
       meta-package gets the override (brand hub); the other package sites inherit
-      the fix when pkgdown updates. **Upstream PR to r-lib/pkgdown still to file.**
+      the fix when pkgdown updates. **Upstream issue filed: r-lib/pkgdown#3038**
+      (bug confirmed still present on pkgdown `main` in both BS3+BS5 head.html;
+      no existing open issue). Override + note landed via PR #2.
 
 ## Decisions log
 
