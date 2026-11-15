@@ -52,8 +52,12 @@ pausing before each `master`→`main` rename for approval):
       (committed 0824643, pushed to `step6-docs-brand`).
 - [x] Decide branch protection: **per-repo, as in toad** (org rulesets blocked
       on free plan) — see *Branch protection* decision below.
-- [~] tractoverse: push `cb7c4aa..0824643` to origin/step6-docs-brand (PR #1) —
-      **middle commits pushed; final commit pushed; verify PR page**.
+- [x] tractoverse: push `cb7c4aa..0824643` to origin/step6-docs-brand (PR #1) —
+      **PR #1 MERGED → main (2026-11-15)** via standard merge commit `4ffdb49`
+      after re-pushing local `main`'s 5 previously-unpublished campaign commits
+      (origin/main 1f32274). Added `workflow_dispatch` to R-CMD-check +
+      test-coverage (`6748442`) so CI can be re-run manually on `main`. Merged
+      branch deleted.
 - [x] fiber: pkgdown dark brand (committed 5599b11 on
       `fix/bundle-set-methods-and-attributes`); **logo corrected** to authored
       `inst/brand/logos/fiber.png` + favicons regenerated + dropped obsolete
@@ -173,6 +177,9 @@ pausing before each `master`→`main` rename for approval):
   superseded by PR #3. Stale remote `placeholder/optimal-transport` branch left
   in place.
 - [ ] After rvtk #6 + bot #1 (now #3) merge, re-run tractoverse CI to confirm green.
+      **PR #1 merged; CI re-run dispatched on `main` (workflow_dispatch, 18:01 UTC) —
+      verify all 3 workflows (R-CMD-check 5-matrix + test-coverage + pkgdown) green,
+      incl. macos now pulling fixed rvtk `49b8cfc`.**
 
 ## Decisions log
 
