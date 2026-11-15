@@ -31,7 +31,21 @@ navbar:
       href: reference/index.html
     packages:
       text: Packages
-      href: articles/packages.html
+      menu:
+      - text: The packages
+        href: articles/packages.html
+      - text: fiber
+        href: https://tractoverse.github.io/fiber/
+      - text: master
+        href: https://tractoverse.github.io/master/
+      - text: rtists
+        href: https://tractoverse.github.io/rtists/
+      - text: riot
+        href: https://tractoverse.github.io/riot/
+      - text: toad
+        href: https://tractoverse.github.io/toad/
+      - text: bot
+        href: https://tractoverse.github.io/bot/
     articles:
       text: News
       href: news/index.html
