@@ -29,7 +29,7 @@ Imports:
     fiber,
     master,
     rtists,
-    riot,
+    riot (>= 2.0.0),
     toad,
     bot
 Suggests:
