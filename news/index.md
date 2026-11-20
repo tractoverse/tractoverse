@@ -1,5 +1,10 @@
 # Changelog
 
+## tractoverse (development version)
+
+- riot now requires v2.0.0 (renamed `read_bundle()`/`write_bundle()`, S7
+  model moved to fiber).
+
 ## tractoverse 0.1.0
 
 - Initial release of the tractoverse meta-package: installs and, with
