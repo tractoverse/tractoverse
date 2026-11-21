@@ -92,6 +92,20 @@ recorded in the logo build notes in DECISIONS.md.
   filenames unless a convention (e.g. an existing package layout)
   mandates underscores.
 
+- **Badges** go in `README.qmd` (source of truth) inside the
+  `<!-- badges: start -->` / `<!-- badges: end -->` block, and
+  `README.md` is regenerated with quarto. CI badges link to the workflow
+  page
+  (`https://github.com/<org>/<repo>/actions/workflows/<workflow>.yaml/badge.svg`);
+  the Codecov badge links to `https://app.codecov.io/gh/<org>/<repo>`
+  and **must be branch-pinned** to the default branch:
+  `https://codecov.io/gh/<org>/<repo>/branch/main/graph/badge.svg`. The
+  unpinned `.../graph/badge.svg` renders codecov’s stored default
+  branch, which can be stale after a repo rename (toad showed 38% while
+  `main` was at 100%; see DECISIONS.md). Add the CRAN status badge
+  (`https://www.r-pkg.org/badges/version/<pkg>`) only after the package
+  is on CRAN — it 404s/500s before publication.
+
 ## Logo pipeline
 
 The full 6-package logo family is regenerated from scratch by a single

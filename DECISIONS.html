@@ -108,6 +108,16 @@
 <ul><li>
 <strong>Dashes, not underscores</strong> for file/script/resource names (esp. in <code>data-raw/</code>); R function/object/variable names and <code>.R</code> files outside <code>data-raw/</code> stay snake_case. (Recorded here and in AGENTS.md for future tasks.)</li>
 </ul><hr></div>
+<div class="section level3">
+<h3 id="codecov-badge-toad-2026-11-21">Codecov badge (toad, 2026-11-21)<a class="anchor" aria-label="anchor" href="#codecov-badge-toad-2026-11-21"></a></h3>
+<ul><li>toad’s Codecov badge showed <code>38%</code> while its <code>main</code> branch measured <code>100%</code> coverage (CI + v4 API + branch badge all confirmed 100%). <strong>Root cause:</strong> the codecov repo record keeps <code>master</code> as its default branch (left over from the old <code>mascot</code> repo; one stale session 2026-10-01 at 37.77%). The unpinned badge <code>https://codecov.io/gh/&lt;org&gt;/&lt;repo&gt;/graph/badge.svg</code> renders that stored default-branch aggregate; the branch-pinned form <code>.../branch/main/graph/badge.svg</code> renders the real <code>main</code> total.</li>
+<li>
+<strong>Fix:</strong> pin Codecov badges to the default branch — toad PR #18 (<code>b842382</code>/<code>17b3a1f</code>), matching rtists’ existing convention. fiber/riot/bot still use the unpinned form (their codecov default currently matches <code>main</code>).</li>
+<li>
+<strong>Optional future cleanup (not done):</strong> set Codecov’s default branch to <code>main</code> in the Codecov web UI (Settings → Repositories) so unpinned URLs also resolve. Not required once badges are pinned.</li>
+<li>
+<strong>How to add a badge</strong>: convention recorded in AGENTS.md (“Badges”).</li>
+</ul><hr></div>
 </div>
 <div class="section level2">
 <h2 id="logo-family-approved-art-direction-light-bg-redesign">Logo family (approved art direction, light-bg redesign)<a class="anchor" aria-label="anchor" href="#logo-family-approved-art-direction-light-bg-redesign"></a></h2>
