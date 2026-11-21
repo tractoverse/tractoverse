@@ -30,7 +30,7 @@ Imports:
     master,
     rtists,
     riot (>= 2.0.0),
-    toad (>= 1.0.0),
+    toad (>= 0.1.0),
     bot
 Suggests:
     knitr,
