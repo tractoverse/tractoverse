@@ -4,7 +4,7 @@
 
 - riot now requires v2.0.0 (renamed `read_bundle()`/`write_bundle()`, S7
   model moved to fiber).
-- toad now requires v1.0.0 (renamed from `mascot`, MIT-licensed code,
+- toad now requires v0.1.0 (renamed from `mascot`, MIT-licensed code,
   new `import_bundle()` API and per-subject `TractSeg` dataset).
 
 ## tractoverse 0.1.0
