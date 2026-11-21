@@ -281,6 +281,26 @@ color #59aaea").
 
 ---
 
+### Codecov badge (toad, 2026-11-21)
+
+- toad's Codecov badge showed `38%` while its `main` branch measured `100%`
+  coverage (CI + v4 API + branch badge all confirmed 100%). **Root cause:** the
+  codecov repo record keeps `master` as its default branch (left over from the
+  old `mascot` repo; one stale session 2026-10-01 at 37.77%). The unpinned
+  badge `https://codecov.io/gh/<org>/<repo>/graph/badge.svg` renders that
+  stored default-branch aggregate; the branch-pinned form
+  `.../branch/main/graph/badge.svg` renders the real `main` total.
+- **Fix:** pin Codecov badges to the default branch — toad PR #18
+  (`b842382`/`17b3a1f`), matching rtists' existing convention. fiber/riot/bot
+  still use the unpinned form (their codecov default currently matches
+  `main`).
+- **Optional future cleanup (not done):** set Codecov's default branch to
+  `main` in the Codecov web UI (Settings → Repositories) so unpinned URLs also
+  resolve. Not required once badges are pinned.
+- **How to add a badge**: convention recorded in AGENTS.md ("Badges").
+
+---
+
 ## Logo family (approved art direction, light-bg redesign)
 
 Task-specific logo build decisions — kept here, out of AGENTS.md, because they
