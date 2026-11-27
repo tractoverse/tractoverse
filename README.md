@@ -35,6 +35,7 @@ the individual package websites and applications. See
 
 ``` mermaid
 flowchart LR
+  classDef tractoverse fill:#e6edf3,stroke:#8b949e,color:#000
   classDef fiber fill:#59aaea,stroke:#59aaea,color:#000
   classDef master fill:#ff9441,stroke:#ff9441,color:#000
   classDef rtists fill:#a980fc,stroke:#a980fc,color:#000
@@ -56,6 +57,7 @@ flowchart LR
   riot --> fiber
   riot --> rvtk
 
+  class tractoverse tractoverse
   class fiber fiber
   class master master
   class rtists rtists
