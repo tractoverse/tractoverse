@@ -13,7 +13,8 @@
 #   3. screenshot the widget with screenshot.R (chromote / webshot2, R).
 #   4. compose_logo() -> light-bg hex + FontAwesome icon + name -> PNG into
 #      `inst/brand/logos/`.
-#   5. assemble the 2x3 montage -> `tractoverse.png`.
+#   5. assemble the 2x3 montage -> `tractoverse.png` (historical; the
+#      meta-package logo is now the hex sticker in `tractoverse-hex.png`).
 #
 # Sourcing cl/cr: from the `.render/` cache (gitignored). On a cold cache the
 # bundles are pulled from `toad::HCP1065_CST_L/R()` (a GitHub-releases
@@ -203,6 +204,10 @@ for (pkg in PKGS) {
 }
 
 # ---- montage: white 1290x1680, 2x3 grid at 1-based origins (oy, ox) ----------
+# NOTE: the meta-package logo `tractoverse.png` is now the hex sticker
+# (copied from the talk deck's `tractoverse-hex.png`); the 2x3 collage is kept
+# for provenance and writes to `tractoverse-montage.png` so it never clobbers
+# the hex logo.
 if (length(PKGS) == 6L) {
   message("\n== assembling montage")
   origins <- data.frame(
@@ -216,6 +221,6 @@ if (length(PKGS) == 6L) {
     im <- readPNG(file.path(LOGO_OUT, sprintf("%s.png", o$pkg))) # 600 x 520 x 4
     canvas[o$oy:(o$oy + 599), o$ox:(o$ox + 519), ] <- im[1:600, 1:520, ]
   }
-  writePNG(canvas, file.path(LOGO_OUT, "tractoverse.png"))
+  writePNG(canvas, file.path(LOGO_OUT, "tractoverse-montage.png"))
 }
 message("logo-family.R done")

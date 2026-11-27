@@ -2,7 +2,7 @@
 
 <!-- README.md is generated from README.qmd. Please edit that file -->
 
-# tractoverse <a href="https://tractoverse.github.io/"><img src="man/figures/logo.png" align="right" height="139" alt="tractoverse website" /></a>
+# tractoverse <a href="https://tractoverse.github.io/"><img src="man/figures/logo.png" align="right" height="160" alt="tractoverse website" /></a>
 
 <!-- badges: start -->
 
