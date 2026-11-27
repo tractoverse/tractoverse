@@ -146,6 +146,7 @@
 </table>
 <p>The package also ships the shared tractoverse <strong>brand</strong> — the colors, theme and logo family above — as the single source of truth reused by the individual package websites and applications. See <code>[tractoverse_brand()]</code> and <code>[tractoverse_theme()]</code>.</p>
 <pre class="mermaid"><code>flowchart LR
+  classDef tractoverse fill:#e6edf3,stroke:#8b949e,color:#000
   classDef fiber fill:#59aaea,stroke:#59aaea,color:#000
   classDef master fill:#ff9441,stroke:#ff9441,color:#000
   classDef rtists fill:#a980fc,stroke:#a980fc,color:#000
@@ -167,6 +168,7 @@
   riot --&gt; fiber
   riot --&gt; rvtk
 
+  class tractoverse tractoverse
   class fiber fiber
   class master master
   class rtists rtists
