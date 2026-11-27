@@ -19,23 +19,6 @@
 <meta property="og:description" content="A curated collection of R packages for the analysis of diffusion MRI tractography data, inspired by the tidyverse. This meta-package installs and attaches the tractoverse family: fiber (data structures), master (simulation of streamlines and microstructural attributes), rtists (interactive 3D visualization), riot (input/output), toad (Tractography Open Atlases Data, reference datasets) and bot (bundle optimal transport). It also ships the shared tractoverse brand (colors, theme, logos) as the single source of truth reused by the individual package websites and applications.">
 <meta property="og:image" content="https://tractoverse.github.io/tractoverse/logo.png">
 <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
-<script type="module">
-  import mermaid from "https://cdn.jsdelivr.net/npm/mermaid@11/dist/mermaid.esm.min.mjs";
-  // pkgdown renders README.qmd mermaid blocks with pandoc (not Quarto), which wraps
-  // the diagram text in <pre class="mermaid"><code>…</code></pre>. mermaid's own
-  // startOnLoad/run() mis-reads that nested markup ("No diagram type detected"), so
-  // drive rendering explicitly from the element's textContent. README.qmd is the single
-  // source for both the GitHub README (mermaid renders natively there) and this home page.
-  mermaid.initialize({ startOnLoad: false });
-  document.addEventListener("DOMContentLoaded", async () => {
-    for (const el of document.querySelectorAll(".mermaid")) {
-      try {
-        const { svg } = await mermaid.render("mm", el.textContent);
-        el.innerHTML = svg;
-      } catch (e) { el.dataset.mmError = String((e && e.message) || e); }
-    }
-  });
-</script>
 </head>
 <body>
     <a href="#main" class="visually-hidden-focusable">Skip to contents</a>
@@ -145,57 +128,29 @@
 </tbody>
 </table>
 <p>The package also ships the shared tractoverse <strong>brand</strong> — the colors, theme and logo family above — as the single source of truth reused by the individual package websites and applications. See <code>[tractoverse_brand()]</code> and <code>[tractoverse_theme()]</code>.</p>
-<pre class="mermaid"><code>flowchart LR
-  classDef tractoverse fill:#e6edf3,stroke:#8b949e,color:#000
-  classDef fiber fill:#59aaea,stroke:#59aaea,color:#000
-  classDef master fill:#ff9441,stroke:#ff9441,color:#000
-  classDef rtists fill:#a980fc,stroke:#a980fc,color:#000
-  classDef riot fill:#3ec4b2,stroke:#3ec4b2,color:#000
-  classDef toad fill:#ffcf1b,stroke:#ffcf1b,color:#000
-  classDef bot fill:#3fb950,stroke:#3fb950,color:#000
-  classDef rvtk fill:#ffffff,stroke:#888,color:#333
-
-  tractoverse --&gt; fiber
-  tractoverse --&gt; master
-  tractoverse --&gt; rtists
-  tractoverse --&gt; riot
-  tractoverse --&gt; toad
-  tractoverse --&gt; bot
-
-  master --&gt; fiber
-  rtists --&gt; fiber
-  toad --&gt; fiber
-  riot --&gt; fiber
-  riot --&gt; rvtk
-
-  class tractoverse tractoverse
-  class fiber fiber
-  class master master
-  class rtists rtists
-  class riot riot
-  class toad toad
-  class bot bot
-  class rvtk rvtk</code></pre>
+<div class="float">
+<img src="reference/figures/ecosystem.svg" alt="The tractoverse ecosystem: tractoverse links fiber, master, rtists, riot, toad, bot; master, rtists, toad and riot link fiber; riot links rvtk"><div class="figcaption">The tractoverse ecosystem: tractoverse links fiber, master, rtists, riot, toad, bot; master, rtists, toad and riot link fiber; riot links rvtk</div>
+</div>
 <p>Dependencies among the family: <code>fiber</code> is the root, providing the shared data structures; <code>master</code>, <code>rtists</code>, <code>toad</code> and <code>riot</code> all build on <code>fiber</code>; <code>riot</code> additionally depends on the external <code>rvtk</code> package for data I/O; and <code>tractoverse</code> (the meta-package) imports all six core packages. <code>bot</code> currently declares no dependencies (it will build on <code>fiber</code> as its statistical methods land).</p>
 <div class="section level2">
 <h2 id="installation">Installation<a class="anchor" aria-label="anchor" href="#installation"></a>
 </h2>
 <p>The core packages are released on CRAN when available and developed on GitHub otherwise. The simplest way to bring in any selection of the family is <code>[install_core_packages()]</code>, which prefers the CRAN release and falls back to the GitHub development branch:</p>
-<div class="sourceCode" id="cb2"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb1"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="co"># Default: install all six core packages</span></span>
 <span><span class="fu">tractoverse</span><span class="fu">::</span><span class="fu"><a href="reference/install_core_packages.html">install_core_packages</a></span><span class="op">(</span><span class="op">)</span></span>
 <span></span>
 <span><span class="co"># …or just the ones you need, and force an upgrade</span></span>
 <span><span class="fu">tractoverse</span><span class="fu">::</span><span class="fu"><a href="reference/install_core_packages.html">install_core_packages</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"fiber"</span>, <span class="st">"bot"</span><span class="op">)</span>, force <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span></span></code></pre></div>
 <p>Once installed, load the whole family in one call:</p>
-<div class="sourceCode" id="cb3"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb2"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://tractoverse.github.io/" class="external-link">tractoverse</a></span><span class="op">)</span></span></code></pre></div>
 <p><code><a href="https://tractoverse.github.io/" class="external-link">library(tractoverse)</a></code> attaches the six core packages, so their functions (<code><a href="https://tractoverse.github.io/fiber/reference/bundle.html" class="external-link">fiber::bundle()</a></code>, <code>master::simulate_bundle()</code>, …) are directly available, and <code><a href="reference/tractoverse_packages.html">tractoverse_packages()</a></code> lists the family.</p>
 </div>
 <div class="section level2">
 <h2 id="quick-start">Quick start<a class="anchor" aria-label="anchor" href="#quick-start"></a>
 </h2>
-<div class="sourceCode" id="cb4"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb3"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://tractoverse.github.io/" class="external-link">tractoverse</a></span><span class="op">)</span></span>
 <span></span>
 <span><span class="co"># The family, with each package's role</span></span>
@@ -209,7 +164,7 @@
 <h2 id="the-shared-brand">The shared brand<a class="anchor" aria-label="anchor" href="#the-shared-brand"></a>
 </h2>
 <p>The tractoverse visual identity is defined once in <code>inst/brand/_brand.yml</code> and mirrored as an R object:</p>
-<div class="sourceCode" id="cb5"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb4"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="reference/tractoverse_brand.html">tractoverse_brand</a></span><span class="op">(</span><span class="op">)</span><span class="op">$</span><span class="va">palette</span></span>
 <span><span class="co">#   fiber   master   rtists     riot     toad      bot</span></span>
 <span><span class="co"># "#59aaea" "#ff9441" "#a980fc" "#3ec4b2" "#ffcf1b" "#3fb950"</span></span></code></pre></div>
