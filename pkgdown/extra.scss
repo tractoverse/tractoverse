@@ -64,3 +64,18 @@ code { color: $tv-blue; }
 .contents .page-header { border-bottom-color: $tv-border; }
 .header-links a { color: $tv-muted; }
 .footer { color: $tv-muted; border-top-color: $tv-border; }
+
+/* --- ecosystem diagram (README) -------------------------------------------------
+ * The deck wraps the ecosystem SVG in a white rounded card. Mirror that on the
+ * dark site so the light node colors (esp. the white rvtk node) keep contrast.
+ * ---------------------------------------------------------------- */
+img[src*="ecosystem.svg"] {
+  display: block;
+  max-width: 100%;
+  height: auto;
+  margin: 1.5rem auto;
+  padding: 1rem;
+  background: #fff;
+  border: 1px solid #ccc;
+  border-radius: 10px;
+}
